@@ -1,30 +1,31 @@
 import Link from "next/link";
 export default function CourseNavigation() {
+  
   return (
-    <ul>
-    <div id="wd-courses-navigation">
-      <li>
-      <Link href="/courses/1234/home" id="wd-course-home-link">Home</Link><br/>
-        </li>
+    <div id="wd-courses-navigation"  className="wd list-group fs-5 rounded-0">
 
-      <li> <Link href="/courses/1234/modules" id="wd-course-modules-link">Modules
-        </Link><br/> </li>
+      <Link href="/courses/1234/home" id="wd-course-home-link"
+        className="list-group-item active border-0"> Home </Link>
 
-      <li> <Link href="/courses/1234/piazza" id="wd-course-piazza-link">Piazza</Link><br/>
-      </li>
+      <Link href="/courses/1234/modules" id="wd-course-modules-link"
+        className="list-group-item text-danger border-0"> Modules </Link>
 
-      <li> <Link href="/courses/1234/zoom" id="wd-course-zoom-link">Zoom</Link><br/> </li>
+      <Link href="/courses/1234/piazza" id="wd-course-piazza-link"
+        className="list-group-item text-danger border-0"> Piazza </Link>
 
-      <li> <Link href="/courses/1234/assignments" id="wd-course-assignments-link">
-          Assignments</Link><br/> </li>
+      <Link href="/courses/1234/zoom" id="wd-course-zoom-link"
+        className="list-group-item text-danger border-0"> Zoom </Link>
 
-      <li> <Link href="/courses/1234/quizzes" id="wd-course-quizzes-link">Quizzes
-        </Link><br/> </li>
+      <Link href="/courses/1234/assignments" id="wd-course-assignments-link"
+        className="list-group-item text-danger border-0"> Assignments </Link>
 
+      <Link href="/courses/1234/quizzes" id="wd-course-quizzes-link"
+        className="list-group-item text-danger border-0"> Quizzes </Link>
 
-      <li> <Link href="/courses/1234/grades" id="wd-course-grades-link">Grades</Link><br/> </li>
-     <li> <Link href="/courses/1234/people/table" id="wd-course-people-link">People</Link><br/> </li>
+      <Link href="/courses/1234/grades" id="wd-course-grades-link"
+        className="list-group-item text-danger border-0"> Grades</Link>
+
+      <Link href="/courses/1234/people/table" id="wd-course-people-link"
+        className="list-group-item text-danger border-0" > People </Link>
     </div>
-    </ul>
-    
   );}

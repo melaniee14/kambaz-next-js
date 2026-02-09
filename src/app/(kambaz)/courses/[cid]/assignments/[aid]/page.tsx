@@ -1,7 +1,125 @@
+import { Row, FormLabel, Col, FormControl, FormSelect, Button, Card, CardBody, CardImg, CardText, CardTitle, FormCheck, InputGroup } from "react-bootstrap";
+import InputGroupText from "react-bootstrap/esm/InputGroupText";
+import { MdCalendarMonth } from "react-icons/md";
+
 export default function AssignmentEditor() {
     return (
-        <>
-      <div id="wd-assignments-editor">
+      <div>
+      <div className="mb-3">
+        <FormLabel> Assignment Name</FormLabel>
+        <FormControl type="name" placeholder="A1" />
+      </div>
+
+      <div className="mb-4">
+       <FormControl as="textarea" rows={8} placeholder={`
+The assignment is available online. 
+Submit a link to the landing page of your Web application running on Netlify. 
+         
+The landing page should include the following:
+  • Your full name and section 
+  • Links to each of the lab assignments 
+  • Link to the Kanbas application
+  • Links to all relevant source code repositories. 
+
+The Kanbas application should include a link to navigate back to the landing page`} /> 
+</div>
+
+<div>
+  <Row className="mb-3 offset-sm-1" controlId="points">
+       <FormLabel column sm={2}> Points </FormLabel>
+       <Col sm={10}>
+           <FormControl type="number" defaultValue="100" />
+       </Col>
+   </Row>
+
+   <Row className="mb-3 offset-sm-1" controlId="points">
+       <FormLabel column sm={2}>Assignment Group</FormLabel>
+       <Col sm={10}>
+           <FormSelect>
+            <option value="0" defaultChecked>ASSIGNMENTS</option>
+           </FormSelect>
+       </Col>
+   </Row>
+
+   <Row className="mb-3 offset-sm-1" controlId="points">
+       <FormLabel column sm={2}>Display Grade as</FormLabel>
+       <Col sm={10}>
+           <FormSelect>
+            <option value="0" defaultChecked>Percentage</option>
+           </FormSelect>
+       </Col>
+   </Row>
+
+   <div id="wd-css-navigating-with-cards">
+  <Row className="mb-3 offset-sm-1" controlId="assign">
+    <FormLabel column sm={2}>Submission Type</FormLabel>
+    <Card style={{ width: "30rem" }}>
+      <CardBody>
+      <FormSelect className="mb-3">
+            <option value="0" defaultChecked>Online</option>
+           </FormSelect>
+
+           
+           <FormLabel className="fw-bold mb-3" >Online Entry Options </FormLabel>
+           <FormCheck className="mb-3" type="checkbox" label="Text Entry" name="formSubmissionType"/>
+           <FormCheck className="mb-3" type="checkbox" label="Website URL" name="formSubmissionType" defaultChecked/>
+           <FormCheck className="mb-3" type="checkbox" label="Media Recordings" name="formSubmissionType"/>
+           <FormCheck className="mb-3" type="checkbox" label="Student Annotation" name="formSubmissionType"/>
+           <FormCheck className="mb-3" type="checkbox" label="File Uploads" name="formSubmissionType"/>
+      </CardBody>
+    </Card>
+  </Row>
+</div>
+
+<div id="wd-css-navigating-with-cards">
+  <Row className="mb-3 offset-sm-1" controlId="assign">
+    <FormLabel column sm={2}>Assign</FormLabel>
+    <Card style={{ width: "30rem" }}>
+      <CardBody>
+        <FormLabel className="fw-bold">Assign To</FormLabel>
+
+        <FormControl className="mb-3" type="text" placeholder="Everyone"/>
+
+        <FormLabel className="fw-bold">Due</FormLabel>
+          <InputGroup>
+        <FormControl className="mb-3" type="text" placeholder="May 13, 2024, 11:59PM"/>
+        <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
+      </InputGroup>
+
+        <FormLabel className="fw-bold"> Available From&emsp;&nbsp;&nbsp;&emsp;&nbsp;&emsp;&emsp;&emsp;&emsp;Until </FormLabel>
+      </CardBody>
+      <Row>
+          <Col>
+            <InputGroup>
+              <FormControl className="mb-3" type="text" placeholder="May 13, 2024, 11:59PM"/>
+              <InputGroupText className="mb-3 gap-2"> <MdCalendarMonth /> </InputGroupText> 
+            </InputGroup>
+          </Col>
+
+          <Col> 
+            <InputGroup>
+              <FormControl className="mb-3" type="text" placeholder=""/>
+              <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
+            </InputGroup>
+          </Col>
+      </Row>
+    </Card>
+    </Row>
+  </div>
+</div>
+
+<hr/>
+
+<div className="mb-3 offset-sm-9">
+        <Button variant="secondary" size="sm">Cancel</Button> <Button variant="danger" size="sm">Save</Button>
+        </div>
+
+
+</div>
+
+  );}
+
+        {/* <div id="wd-assignments-editor">
         <h3><label htmlFor="wd-name">Assignment Name</label></h3>
         <input id="wd-name" defaultValue="A1 - ENV + HTML" /><br /><br />
         <textarea id="wd-description">
@@ -118,6 +236,4 @@ export default function AssignmentEditor() {
       </div>
       </>
       
-
-  );}
-  
+   */}
