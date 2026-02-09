@@ -10,9 +10,13 @@ import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { PiNotePencilThin } from "react-icons/pi";
 import GreenCheckmark from "../modules/GreenCheckmark";
+import { ReactNode } from "react";
+
+
 
 
 export default function Assignments() {
+
     return (
       <div id="wd-assignments">
         <div className="d-flex align-items-center justify-content-between mb-4">
@@ -66,7 +70,8 @@ export default function Assignments() {
               </div>
 
               <div>
-                <h5 className="mb-1"> <Link href="/courses/{cid}/assignments/{aid}"
+                <h5 className="mb-1"> 
+                  <Link href="/courses/1234/assignments/1"
                className="wd-assignment-link" >
               A1
             </Link> </h5>
@@ -97,7 +102,7 @@ export default function Assignments() {
               </div>
 
               <div>
-              <h5 className="mb-1"> <Link href="/courses/{cid}/assignments/{aid}"
+              <h5 className="mb-1"> <Link href="/courses/1234/assignments/2"
                className="wd-assignment-link" >
               A2
             </Link> </h5>
@@ -128,7 +133,7 @@ export default function Assignments() {
               </div>
 
               <div>
-                <h5 className="mb-1"> <Link href="/courses/{cid}/assignments/4"
+                <h5 className="mb-1"> <Link href="/courses/1234/assignments/3"
                className="wd-assignment-link" >
               A3
             </Link> </h5>
