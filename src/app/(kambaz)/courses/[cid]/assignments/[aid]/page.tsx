@@ -53,7 +53,8 @@ The Kanbas application should include a link to navigate back to the landing pag
    <div id="wd-css-navigating-with-cards">
   <Row className="mb-3 offset-sm-1" controlId="assign">
     <FormLabel column sm={2}>Submission Type</FormLabel>
-    <Card style={{ width: "30rem" }}>
+    <Col sm={10}> 
+    <Card className="w-55">
       <CardBody>
       <FormSelect className="mb-3">
             <option value="0" defaultChecked>Online</option>
@@ -68,13 +69,15 @@ The Kanbas application should include a link to navigate back to the landing pag
            <FormCheck className="mb-3" type="checkbox" label="File Uploads" name="formSubmissionType"/>
       </CardBody>
     </Card>
+    </Col>
   </Row>
 </div>
 
 <div id="wd-css-navigating-with-cards">
   <Row className="mb-3 offset-sm-1" controlId="assign">
     <FormLabel column sm={2}>Assign</FormLabel>
-    <Card style={{ width: "30rem" }}>
+    <Col sm={10 }> 
+    <Card className="w-55">
       <CardBody>
         <FormLabel className="fw-bold">Assign To</FormLabel>
 
@@ -86,10 +89,9 @@ The Kanbas application should include a link to navigate back to the landing pag
         <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
       </InputGroup>
 
-        <FormLabel className="fw-bold"> Available From&emsp;&nbsp;&nbsp;&emsp;&nbsp;&emsp;&emsp;&emsp;&emsp;Until </FormLabel>
-      </CardBody>
-      <Row>
+      <Row className="mb-3">
           <Col>
+          <FormLabel className="fw-bold">  Available From </FormLabel>
             <InputGroup>
               <FormControl className="mb-3" type="text" placeholder="May 13, 2024, 11:59PM"/>
               <InputGroupText className="mb-3 gap-2"> <MdCalendarMonth /> </InputGroupText> 
@@ -97,20 +99,27 @@ The Kanbas application should include a link to navigate back to the landing pag
           </Col>
 
           <Col> 
+          <FormLabel className="fw-bold">Until</FormLabel>
             <InputGroup>
+            
               <FormControl className="mb-3" type="text" placeholder=""/>
               <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
             </InputGroup>
           </Col>
       </Row>
+
+        
+      </CardBody>
+      
     </Card>
+    </Col>
     </Row>
   </div>
 </div>
 
 <hr/>
 
-<div className="mb-3 offset-sm-9">
+<div className="mb-3 offset-sm-10">
         <Button variant="secondary" size="sm">Cancel</Button> <Button variant="danger" size="sm">Save</Button>
         </div>
 
