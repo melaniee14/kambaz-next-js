@@ -1,0 +1,84 @@
+[
+    {
+      "_id": "RS101",
+      "name": "React JS",
+      "number": "CS1234",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Software",
+      "credits": 4,
+      "description": "This course provides an in-depth study of the journey to becoming a software developer and the tools necessary to do so."
+    },
+    {
+      "_id": "MB101",
+      "name": "Miffy Baking",
+      "number": "CS3403",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Culinary",
+      "credits": 4,
+      "description": "Learn how to make a cake with miffy decorated all over it."
+    },
+    {
+      "_id": "AT101",
+      "name": "Angel Training",
+      "number": "CS1111",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Training",
+      "credits": 4,
+      "description": "Learn and understand how to interpret all angel numbers."
+    },
+    {
+      "_id": "ST101",
+      "name": "Smiski Trading",
+      "number": "CS2222",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Trading",
+      "credits": 4,
+      "description": "Trade and sell Smiskis with other people in the course."
+    },
+    {
+      "_id": "MM101",
+      "name": "Making Matcha",
+      "number": "CS7777",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Culinary",
+      "credits": 4,
+      "description": "This coure offers an explanation of how to make an iced matcha latte at home."
+    },
+    {
+      "_id": "P101",
+      "name": "Closet Full of Pink",
+      "number": "CS0000",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Fashion",
+      "credits": 4,
+      "description": "Understand how to turn all fashion choices into pink monochrome outfits."
+    },
+    {
+      "_id": "WD101",
+      "name": "Web Dev for Beginners",
+      "number": "CS2146",
+      "startDate": "2001-01-01",
+      "endDate": "2002-02-02",
+      "department": "Software",
+      "credits": 4,
+      "description": "This course offers an exploration of the ancient languages and scripts found throughout Middle-earth, including Elvish (Sindarin and Quenya), Dwarvish (Khuzdul), and the Black Speech of Mordor. Students will learn the historical and cultural contexts of these languages, their linguistic structures, and their usage in various inscriptions and texts. Emphasis is on understanding the philological aspects and the role of language in shaping Middle-earth's history and lore."
+    },
+    {
+      "_id": "RS108",
+      "name": "Wizards, Elves, and Men: Inter-species Diplomacy in Middle-earth",
+      "number": "ME102",
+      "startDate": "2023-01-10",
+      "endDate": "2023-05-15",
+      "department": "Political Studies",
+      "credits": 4,
+      "description": "This course explores the complex relationships and diplomatic interactions among the different races of Middle-earth: Elves, Men, Dwarves, and Wizards. Topics include the study of historical alliances, conflicts, and the role of leadership and wisdom in maintaining peace. Students will engage in discussions and case studies on key events in Middle-earth's history, such as the Council of Elrond and the War of the Ring, to understand the principles of diplomacy and conflict resolution in a multi-species context.",
+      "author": "654f9ec2ea7ead465908d1e3"
+    }
+  ]
+  

@@ -1,21 +1,23 @@
+"use client";
 import Link from "next/link";
 import { Button, FormControl, InputGroup, ListGroup, ListGroupItem } from "react-bootstrap";
-import { BsGripVertical } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 import { FaPlus } from "react-icons/fa6";
-import LessonControlButtons from "../modules/LessonControlButtons";
-import ModuleControlButtons from "./ButtonsAfterTitle";
 import { TbGripVertical } from "react-icons/tb";
 import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { PiNotePencilThin } from "react-icons/pi";
 import GreenCheckmark from "../modules/GreenCheckmark";
-import { ReactNode } from "react";
+import { useParams } from "next/navigation";
+import * as db from "../../../database";
+
 
 
 
 
 export default function Assignments() {
+  const { cid } = useParams();
+  const assignments = db.assignments;
 
     return (
       <div id="wd-assignments">
@@ -40,8 +42,7 @@ export default function Assignments() {
          </div>
 
 
-
-    <ListGroup className="rounded-0" id="wd-modules">
+  <ListGroup className="rounded-0" id="wd-assignments">
     <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
       <div className="wd-title p-3 ps-2 bg-secondary"> 
         <div className="d-flex align-items-center justify-content-between">
@@ -59,7 +60,10 @@ export default function Assignments() {
           </div>
         </div>
       </div>
-
+      
+      {assignments
+          .filter((assignment: any) => assignment.course === cid)
+          .map((assignment: any) => (
       <ListGroup className="wd-lessons rounded-0">
         <ListGroupItem className="wd-lesson p-3 ps-1">
           <div className="d-flex align-items-center justify-content-between">
@@ -71,15 +75,16 @@ export default function Assignments() {
 
               <div>
                 <h5 className="mb-1"> 
-                  <Link href="/courses/1234/assignments/1"
+                  <Link href= {`/courses/${assignment.course}/assignments/${assignment._id}`}
                className="wd-assignment-link" >
-              A1
+              {assignment.title}
+
             </Link> </h5>
                 <div className="fs-6">
                   <span className="text-warning">Multiple Modules</span> | 
-                <b> Not available until</b> May 6 at 12:00 am | </div>
+                <b> Not available until</b> {assignment.available} | </div>
                 <div className="fs-6">
-                <b>Due</b> May 13 at 11:59pm | 100 pts
+                <b>Due</b> {assignment.due} | {assignment.points} pts
                 </div>
               </div>
             </div>
@@ -90,84 +95,10 @@ export default function Assignments() {
             </div>
           </div>
         </ListGroupItem>
-      </ListGroup>
-
-      <ListGroup className="wd-lessons rounded-0">
-        <ListGroupItem className="wd-lesson p-3 ps-1">
-          <div className="d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center gap-2">
-              <div className="d-flex align-items-center gap-2">
-                <TbGripVertical className="fs-4" />
-                <PiNotePencilThin className="fs-5 text-success" />
-              </div>
-
-              <div>
-              <h5 className="mb-1"> <Link href="/courses/1234/assignments/2"
-               className="wd-assignment-link" >
-              A2
-            </Link> </h5>
-                <div className="fs-6">
-                  <span className="text-warning">Multiple Modules</span> | 
-                <b> Not available until</b> May 13 at 12:00 am | </div>
-                <div className="fs-6">
-                <b>Due</b> May 20 at 11:59pm | 100 pts
-                </div>
-              </div>
-            </div>
-
-            <div className="d-flex align-items-center gap-2">
-                <GreenCheckmark/>
-                <IoEllipsisVertical/>
-            </div>
-          </div>
-        </ListGroupItem>
-      </ListGroup>
-
-      <ListGroup className="wd-lessons rounded-0">
-        <ListGroupItem className="wd-lesson p-3 ps-1">
-          <div className="d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center gap-2">
-              <div className="d-flex align-items-center gap-2">
-                <TbGripVertical className="fs-4" />
-                <PiNotePencilThin className="fs-5 text-success" />
-              </div>
-
-              <div>
-                <h5 className="mb-1"> <Link href="/courses/1234/assignments/3"
-               className="wd-assignment-link" >
-              A3
-            </Link> </h5>
-                <div className="fs-6">
-                  <span className="text-warning">Multiple Modules</span> | 
-                <b> Not available until</b> May 20 at 12:00 am | </div>
-                <div className="fs-6">
-                <b>Due</b> May 27 at 11:59pm | 100 pts
-                </div>
-              </div>
-            </div>
-
-            <div className="d-flex align-items-center gap-2">
-                <GreenCheckmark/>
-                <IoEllipsisVertical/>
-            </div>
-          </div>
-        </ListGroupItem>
-      </ListGroup>
-
-        
-    
+      </ListGroup> ))}
       </ListGroupItem>
     </ListGroup>
 
   
-</div>
-
-
-
-
-
-      
-      
+</div>   
   );}
-
-  

@@ -1,0 +1,117 @@
+[
+    {
+      "_id": "RS101",
+      "name": "Introduction to React JS",
+      "description": "Basic principles of rocket propulsion and rocket engines.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L101",
+          "name": "History of Rocketry",
+          "description": "A brief history of rocketry and space exploration.",
+          "module": "CS1234"
+        },
+        {
+          "_id": "L102",
+          "name": "Rocket Propulsion Fundamentals",
+          "description": "Basic principles of rocket propulsion.",
+          "module": "CS1234"
+        },
+        {
+          "_id": "L103",
+          "name": "Rocket Engine Types",
+          "description": "Overview of different types of rocket engines.",
+          "module": "CS1234"
+        }
+      ]
+    },
+    {
+      "_id": "MB101",
+      "name": "Miffy Baking",
+      "description": "Learning how to place miffy decorations on a cake.",
+      "course": "MB101",
+      "lessons": [
+        {
+          "_id": "L201",
+          "name": "What is Miffy?",
+          "description": "Overview of different types of rocket fuels.",
+          "module": "CS3403"
+        },
+        {
+          "_id": "L202",
+          "name": "Making the base",
+          "description": "Understanding combustion processes and efficiency.",
+          "module": "CS3403"
+        },
+        {
+          "_id": "L203",
+          "name": "Decorating the cake.",
+          "description": "Understanding combustion instability and mitigation.",
+          "module": "CS3403"
+        }
+      ]
+    },
+    {
+      "_id": "AT101",
+      "name": "Angel Training",
+      "description": "Principles of rocket nozzle design and performance optimization.",
+      "course": "AT101",
+      "lessons": [
+        {
+          "_id": "L301",
+          "name": "Angel Numbers Introduction",
+          "description": "Overview of different types of rocket nozzles.",
+          "module": "M103"
+        },
+        {
+          "_id": "L302",
+          "name": "Spiritual Connection",
+          "description": "Understanding nozzle performance and efficiency.",
+          "module": "M103"
+        },
+        {
+          "_id": "L303",
+          "name": "Tarot Cards",
+          "description": "Optimizing nozzle design for specific applications.",
+          "module": "M103"
+        }
+      ]
+    },
+    {
+      "_id": "ST101",
+      "name": "Smiski Trading",
+      "description": "Basic aerodynamic concepts and fluid dynamics principles.",
+      "course": "ST101"
+    },
+    {
+      "_id": "P101",
+      "name": "Closet Full of Pink",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "P101"
+    },
+    {
+      "_id": "WD101",
+      "name": "Aerodynamic Heating",
+      "description": "Study of aerodynamic heating and thermal protection systems.",
+      "course": "WD101"
+    },
+    {
+      "_id": "RS108",
+      "name": "Spacecraft Structural Design",
+      "description": "Fundamentals of designing spacecraft structures and materials selection.",
+      "course": "RS108"
+    },
+    {
+      "_id": "RS108",
+      "name": "Orbital Mechanics",
+      "description": "Understanding orbital dynamics and mission planning.",
+      "course": "RS108"
+    },
+    {
+      "_id": "RS108",
+      "name": "Spacecraft Systems Engineering",
+      "description": "Overview of spacecraft systems and subsystems engineering.",
+      "course": "RS108"
+    }
+  ]
+  
