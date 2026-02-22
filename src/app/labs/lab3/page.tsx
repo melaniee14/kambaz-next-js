@@ -97,8 +97,6 @@ export default function Lab3() {
 
         <Styles/>
 
-        <ClientComponentDemo/>
-
         <ServerComponentDemo/>
 
         <Add a={3} b={4} />
