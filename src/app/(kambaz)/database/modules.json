@@ -25,9 +25,57 @@
         }
       ]
     },
+
+    {
+      "_id": "RS102",
+      "name": "React JS Continued",
+      "description": "Basic principles of rocket propulsion and rocket engines.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L101",
+          "name": "History of JavaScript",
+          "description": "A brief history of rocketry and space exploration.",
+          "module": "CS1234"
+        },
+
+        {
+          "_id": "L101",
+          "name": "History of React",
+          "description": "A brief history of rocketry and space exploration.",
+          "module": "CS1234"
+        }
+      
+      ]
+    },
+
+    {
+      "_id": "RS103",
+      "name": "React JS Final",
+      "description": "Basic principles of rocket propulsion and rocket engines.",
+      "course": "RS101",
+      "lessons": [
+        {
+          "_id": "L101",
+          "name": "Final Teachings",
+          "description": "A brief history of rocketry and space exploration.",
+          "module": "CS1234"
+        },
+
+        {
+          "_id": "L101",
+          "name": "Final Exam",
+          "description": "A brief history of rocketry and space exploration.",
+          "module": "CS1234"
+        }
+      
+      ]
+    },
+
+
     {
       "_id": "MB101",
-      "name": "Miffy Baking",
+      "name": "Intro to Miffy Baking",
       "description": "Learning how to place miffy decorations on a cake.",
       "course": "MB101",
       "lessons": [
@@ -42,18 +90,61 @@
           "name": "Making the base",
           "description": "Understanding combustion processes and efficiency.",
           "module": "CS3403"
-        },
+        }
+        
+      ]
+    },
+
+    {
+      "_id": "MB102",
+      "name": "Baking a Cake",
+      "description": "Learning how to place miffy decorations on a cake.",
+      "course": "MB101",
+      "lessons": [
+        
         {
           "_id": "L203",
           "name": "Decorating the cake.",
           "description": "Understanding combustion instability and mitigation.",
           "module": "CS3403"
+        },
+
+        {
+          "_id": "L203",
+          "name": "Final Decorations.",
+          "description": "Understanding combustion instability and mitigation.",
+          "module": "CS3403"
         }
       ]
     },
+
+    {
+      "_id": "MB103",
+      "name": "Final Project",
+      "description": "Learning how to place miffy decorations on a cake.",
+      "course": "MB101",
+      "lessons": [
+        
+        {
+          "_id": "L203",
+          "name": "Tutorial",
+          "description": "Understanding combustion instability and mitigation.",
+          "module": "CS3403"
+        },
+
+        {
+          "_id": "L203",
+          "name": "Submission",
+          "description": "Understanding combustion instability and mitigation.",
+          "module": "CS3403"
+        }
+      ]
+    },
+
+
     {
       "_id": "AT101",
-      "name": "Angel Training",
+      "name": "Intro to Angel Training",
       "description": "Principles of rocket nozzle design and performance optimization.",
       "course": "AT101",
       "lessons": [
@@ -77,24 +168,129 @@
         }
       ]
     },
+
+
+    {
+      "_id": "AT102",
+      "name": " Angel Training Practice",
+      "description": "Principles of rocket nozzle design and performance optimization.",
+      "course": "AT101",
+      "lessons": [
+        {
+          "_id": "L302",
+          "name": "Spiritual Connection",
+          "description": "Understanding nozzle performance and efficiency.",
+          "module": "M103"
+        },
+        {
+          "_id": "L303",
+          "name": "Tarot Cards",
+          "description": "Optimizing nozzle design for specific applications.",
+          "module": "M103"
+        }
+      ]
+    },
+
+    {
+      "_id": "AT103",
+      "name": " Angel Training Final",
+      "description": "Principles of rocket nozzle design and performance optimization.",
+      "course": "AT101",
+      "lessons": [
+        {
+          "_id": "L303",
+          "name": "Tarot Cards",
+          "description": "Optimizing nozzle design for specific applications.",
+          "module": "M103"
+        }
+      ]
+    },
+
+
     {
       "_id": "ST101",
-      "name": "Smiski Trading",
+      "name": "Intro to Smiski Trading",
       "description": "Basic aerodynamic concepts and fluid dynamics principles.",
       "course": "ST101"
     },
+
+    {
+      "_id": "ST102",
+      "name": "Smiski Trading Store",
+      "description": "Basic aerodynamic concepts and fluid dynamics principles.",
+      "course": "ST101"
+    },
+
+    {
+      "_id": "ST103",
+      "name": "Smiski Trading Together",
+      "description": "Basic aerodynamic concepts and fluid dynamics principles.",
+      "course": "ST101"
+    },
+
     {
       "_id": "P101",
-      "name": "Closet Full of Pink",
+      "name": "Throwing Out Old Clothes",
       "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
       "course": "P101"
     },
+
+    {
+      "_id": "P102",
+      "name": "Where To Shop",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "P101"
+    },
+
+    {
+      "_id": "P103",
+      "name": "Transforming Your Closet",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "P101"
+    },
+
+    {
+      "_id": "MM101",
+      "name": "History of Matcha",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "MM101"
+    },
+
+    {
+      "_id": "MM102",
+      "name": "Matcha in Stores",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "MM101"
+    },
+
+    {
+      "_id": "MM103",
+      "name": "Matcha Matcha At Home",
+      "description": "Understanding subsonic and supersonic aerodynamic behaviors.",
+      "course": "MM101"
+    },
+
     {
       "_id": "WD101",
-      "name": "Aerodynamic Heating",
+      "name": "Intro to Web Dev",
       "description": "Study of aerodynamic heating and thermal protection systems.",
       "course": "WD101"
     },
+
+    {
+      "_id": "WD102",
+      "name": "Web Dev Tools",
+      "description": "Study of aerodynamic heating and thermal protection systems.",
+      "course": "WD101"
+    },
+
+    {
+      "_id": "WD103",
+      "name": "Make Your Own Website",
+      "description": "Study of aerodynamic heating and thermal protection systems.",
+      "course": "WD101"
+    },
+    
     {
       "_id": "RS108",
       "name": "Spacecraft Structural Design",
