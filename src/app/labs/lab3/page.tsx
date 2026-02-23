@@ -33,6 +33,7 @@ import Highlight from "./Highlight";
 import PathParameters from "./PathParameters";
 import AddPathParameters from "./add/[a]/[b]/page";
 import TodoList from "./todos/Todolist";
+import TodoItem from "./todos/TodoItem";
 
 
 
@@ -114,6 +115,8 @@ export default function Lab3() {
 
         <PathParameters/>
         <br/>
+
+        <TodoItem/>
 
         <TodoList/>
 
