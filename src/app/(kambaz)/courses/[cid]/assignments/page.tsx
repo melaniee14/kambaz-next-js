@@ -2,22 +2,58 @@
 import Link from "next/link";
 import { Button, FormControl, InputGroup, ListGroup, ListGroupItem } from "react-bootstrap";
 import { CiSearch } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa6";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import { TbGripVertical } from "react-icons/tb";
 import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { PiNotePencilThin } from "react-icons/pi";
 import GreenCheckmark from "../modules/GreenCheckmark";
-import { useParams } from "next/navigation";
-import * as db from "../../../database";
+import { redirect, useParams, useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import { addAssignment, editAssignment, updateAssignment, deleteAssignment }
+  from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
+import "../../../../(kambaz)/styles.css"
+import { useState } from "react";
+import DeleteAssignment from "./DeleteAssignment";
 
 
 
 
 
 export default function Assignments() {
+  const router = useRouter();
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const {assignments} = useSelector((state: RootState) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  const [asgnToDel, setAsgnmntToDel] = useState<string | null>();
+  const handleClose = () => setAsgnmntToDel(null);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  
+  
+  const createNewAssignment = () => {
+    const aid = "New Assignment";
+
+    if(currentUser?.role != "STUDENT") {
+      const newAssignment = {
+        _id: aid,
+        title: "New Assignment",
+        course: cid,
+        available: "",
+        due: "",
+        points: 100,
+      };
+  
+      dispatch(addAssignment(newAssignment));
+      router.push(`/courses/${cid}/assignments/${aid}`);
+    }
+    
+  }
+
+
+
+  
 
     return (
       <div id="wd-assignments">
@@ -29,16 +65,17 @@ export default function Assignments() {
               <FormControl type="search" placeholder="Search..." className="ps-5" />
           </div>
           
-
-          <div className="d-flex gap-1">
+      
+          {currentUser?.role != "STUDENT" && <div className="d-flex gap-1">
             <Button variant="secondary" size="sm" className="w-100 text-nowrap ">
               <FaPlus className="me-2 fs-5" /> Group 
             </Button>
           
-            <Button variant="danger" size="sm" className="w-100 text-nowrap ">
+            <Button onClick={createNewAssignment} 
+            variant="danger" size="sm" className="w-100 text-nowrap ">
               <FaPlus className="me-2 fs-5" /> Assignment
             </Button>
-          </div>
+          </div> }
          </div>
 
 
@@ -47,7 +84,7 @@ export default function Assignments() {
       <div className="wd-title p-3 ps-2 bg-secondary"> 
         <div className="d-flex align-items-center justify-content-between">
           <div className="position-relative w-50">
-          <TbGripVertical/> <FaCaretDown /> Assignments  
+          <TbGripVertical/> <FaCaretDown /> ASSIGNMENTS
           </div>
 
           <div className="d-flex align-items-center gap-1">
@@ -75,11 +112,11 @@ export default function Assignments() {
 
               <div>
                 <h5 className="mb-1"> 
-                  <Link href= {`/courses/${assignment.course}/assignments/${assignment._id}`}
-               className="wd-assignment-link" >
-              {assignment.title}
+                  <a href= {`/courses/${assignment.course}/assignments/${assignment._id}`}
+                className="wd-assignment-link" >
+              {assignment.title}  
 
-            </Link> </h5>
+            </a> </h5>
                 <div className="fs-6">
                   <span className="text-warning">Multiple Modules</span> | 
                 <b> Not available until</b> {assignment.available} | </div>
@@ -89,9 +126,16 @@ export default function Assignments() {
               </div>
             </div>
 
-            <div className="d-flex align-items-center gap-2">
+            <div className="float-end d-flex justify-content-between gap-2 ">
+            
+            {currentUser?.role != "STUDENT" && 
+                <FaTrash onClick={() => {setAsgnmntToDel(assignment._id); }} className="text-danger" /> }
                 <GreenCheckmark/>
                 <IoEllipsisVertical/>
+
+                
+                <DeleteAssignment show={asgnToDel === assignment._id} handleClose={handleClose} aid={assignment._id} dialogTitle={"Are You Sure You Want to Delete?"} />
+           
             </div>
           </div>
         </ListGroupItem>

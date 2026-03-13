@@ -7,8 +7,6 @@ import { BsGripVertical } from "react-icons/bs";
 import LessonControlButtons from "./LessonControlButtons";
 import ModuleControlButtons from "./ModuleControlButtons";
 import { useParams } from "next/navigation";
-import * as db from "../../../database";
-import { v4 as uuidv4 } from "uuid";
 import { addModule, editModule, updateModule, deleteModule }
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,21 +19,7 @@ export default function Modules() {
   const [moduleName, setModuleName] = useState("");
   const dispatch = useDispatch();
 
-  // const addModule = () => {
-  //   setModules([ ...modules, { _id: uuidv4(), name: moduleName, course: cid, lessons: [] } ]);
-  //   setModuleName("");
-  // };
-  // const deleteModule = (moduleId: string) => {
-  //   setModules(modules.filter((m) => m._id !== moduleId));
-  // };
-  // const editModule = (moduleId: string) => {
-  //   setModules(modules.map((m) => (m._id === moduleId ? { ...m, editing: true } : m)));
-  // };
-  // const updateModule = (module: any) => {
-  //   setModules(modules.map((m) => (m._id === module._id ? module : m)));
-  // };
-
-
+ 
 
 
 

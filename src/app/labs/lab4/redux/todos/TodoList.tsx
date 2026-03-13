@@ -1,3 +1,4 @@
+"use client";
 import TodoForm from "../todos/ToDoForm";
 import TodoItem from "../todos/ToDoItem";
 import { useSelector } from "react-redux";

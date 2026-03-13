@@ -3,42 +3,64 @@ import { Row, FormLabel, Col, FormControl, FormSelect, Button, Card, CardBody, C
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { MdCalendarMonth } from "react-icons/md";
 import { useParams } from "next/navigation";
-import * as db from "../../../../database";
-import Link from "next/link";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../../store";
+import { updateAssignment, deleteAssignment } from "../reducer";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 
 export default function AssignmentEditor() {
 const { aid } = useParams();
-const assignments = db.assignments;
+const router = useRouter();
+const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+const dispatch = useDispatch();
+
+const currentAssignment = assignments.find((a:any) => a._id === aid);
+const [editedAssignment, setEditedAssignment] = useState<any>(currentAssignment);
+
+const updateAssignmentsInEditor = () => {
+  dispatch(updateAssignment(editedAssignment));
+
+  router.push(`/courses/${editedAssignment.course}/assignments`);
+}
+
+const deleteOrNot = () => {
+  if(editedAssignment.new) {
+    dispatch(deleteAssignment(editedAssignment._id));
+    router.push(`/courses/${editedAssignment.course}/assignments/`);
+
+  }
+  else {
+    router.push(`/courses/${editedAssignment.course}/assignments/`);
+  }
+}
 
     return (
-      
-      
-
       <div>
         {assignments
         .filter((assignment: any) => assignment._id=== aid)
         .map((assignment: any) => (
-      <><div className="mb-3">
+      <>
+         <div className="mb-3">
             <FormLabel> Assignment Name</FormLabel>
-            <FormControl type="name" placeholder={assignment.title} />
-          </div><div className="mb-4">
-              <FormControl as="textarea" rows={8} placeholder={`
-The assignment is available online. 
-Submit a link to the landing page of your Web application running on Netlify. 
-         
-The landing page should include the following:
-  • Your full name and section 
-  • Links to each of the lab assignments 
-  • Link to the Kanbas application
-  • Links to all relevant source code repositories. 
+            <FormControl onChange={(e) => 
+                    setEditedAssignment({...editedAssignment, title: e.target.value})} type="name" placeholder={assignment.title} />
+          </div> 
 
-The Kanbas application should include a link to navigate back to the landing page`} />
-            </div><div>
+          <div className="mb-4">
+              <FormControl onChange={(e) => 
+                    setEditedAssignment({...editedAssignment, desc: e.target.value})} as="textarea" rows={8} placeholder={assignment.desc}  />
+            </div>
+            
+          <div>
               <Row className="mb-3 offset-sm-1" controlId="points">
                 <FormLabel column sm={2}> Points </FormLabel>
                 <Col sm={10}>
-                  <FormControl type="number" defaultValue={assignment.points} />
+                  <FormControl onChange={(e) => 
+                    setEditedAssignment({...editedAssignment, points: e.target.value})} type="number" defaultValue={assignment.points} />
                 </Col>
               </Row>
 
@@ -70,7 +92,6 @@ The Kanbas application should include a link to navigate back to the landing pag
                           <option value="0" defaultChecked>Online</option>
                         </FormSelect>
 
-
                         <FormLabel className="fw-bold mb-3">Online Entry Options </FormLabel>
                         <FormCheck className="mb-3" type="checkbox" label="Text Entry" name="formSubmissionType" />
                         <FormCheck className="mb-3" type="checkbox" label="Website URL" name="formSubmissionType" defaultChecked />
@@ -95,7 +116,9 @@ The Kanbas application should include a link to navigate back to the landing pag
 
                         <FormLabel className="fw-bold">Due</FormLabel>
                         <InputGroup>
-                          <FormControl className="mb-3" type="text" placeholder={assignment.due} />
+                          <FormControl onChange={(e) => 
+                            setEditedAssignment({...editedAssignment, due: e.target.value})} 
+                            className="mb-3" type="text" placeholder={assignment.due} />
                           <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
                         </InputGroup>
 
@@ -103,7 +126,8 @@ The Kanbas application should include a link to navigate back to the landing pag
                           <Col>
                             <FormLabel className="fw-bold">  Available From </FormLabel>
                             <InputGroup>
-                              <FormControl className="mb-3" type="text" placeholder={assignment.available} />
+                              <FormControl onChange={(e) => 
+                                setEditedAssignment({...editedAssignment, available: e.target.value})} className="mb-3" type="text" placeholder={assignment.available} />
                               <InputGroupText className="mb-3 gap-2"> <MdCalendarMonth /> </InputGroupText>
                             </InputGroup>
                           </Col>
@@ -112,7 +136,9 @@ The Kanbas application should include a link to navigate back to the landing pag
                             <FormLabel className="fw-bold">Until</FormLabel>
                             <InputGroup>
 
-                              <FormControl className="mb-3" type="text" placeholder = {assignment.due} />
+                              <FormControl onChange={(e) => 
+                                  setEditedAssignment({...editedAssignment, until: e.target.value})}
+                                  className="mb-3" type="text" placeholder = {assignment.until} />
                               <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
                             </InputGroup>
                           </Col>
@@ -129,13 +155,13 @@ The Kanbas application should include a link to navigate back to the landing pag
             <Row className="mb-3 offset-sm-9">
               <Col> 
              
-              <Link id="wd-cancel-btn"
-            href={`/courses/${assignment.course}/assignments/`}
-            className="btn btn-secondary w-40 mb-2">
-            Cancel </Link>  <Link id="wd-cancel-btn"
-            href={`/courses/${assignment.course}/assignments/`}
-            className="btn btn-danger w-40 mb-2">
-            Save </Link>
+              <Button id="wd-cancel-btn" variant = "secondary"
+            onClick={deleteOrNot}
+            className="w-40 mb-2">
+            Cancel </Button>  <Button id="wd-save-btn" variant ="danger"
+            onClick={updateAssignmentsInEditor}
+            className="w-40 mb-2">
+            Save </Button>
               </Col>
             </Row>
             </>
@@ -144,122 +170,3 @@ The Kanbas application should include a link to navigate back to the landing pag
 </div>
 
    )};
-
-        {/* <div id="wd-assignments-editor">
-        <h3><label htmlFor="wd-name">Assignment Name</label></h3>
-        <input id="wd-name" defaultValue="A1 - ENV + HTML" /><br /><br />
-        <textarea id="wd-description">
-          The assignment is available online Submit a link to the landing page of 
-          your Web application running on Netlify. The landing page should include the following:
-          Your full name and section Links to each of the lab assignments Link to the Kanbas application
-          Links to all relevant source code repositories. The Kanbas application should
-          include a link to navigate back to the landing page.
-        </textarea>
-        <br />
-        <table>
-            <br></br>
-          <tr>
-            <td align="right" valign="top">
-              <label htmlFor="wd-points">Points</label>
-            </td>
-            <td>
-              <input id="wd-points" defaultValue={100} />
-            </td>
-          </tr>
-          <br></br>
-          <tr>
-            <td align="right" valign="top">
-                <label htmlFor="wd-group">Assignment Group</label>
-            </td>
-            <select name="ASSIGNMENTS" id="group"> 
-            <option>ASSIGNMENTS</option>
-            </select>
-          </tr>
-        <br />
-
-          <tr>
-            <td align="right" valign="top">
-                <label htmlFor="wd-group">Display Grade as </label>
-            </td>
-            <select name="percent" id="group"> 
-            <option>Percentage</option>
-            </select>
-          </tr>
-          <br />
-
-          <tr>
-            <td align="right" valign="top">
-                <label htmlFor="wd-group">Submission Type </label>
-            </td>
-            <select name="online" id="type"> 
-            <option>Online</option>
-            </select>
-            
-            <br />
-            <tr>
-                <td align="left" valign="top">
-                    
-            <label>Online Entry Options</label><br/>
-
-            <input type="checkbox" name="options" id="wd-chkbox-entry"/>
-            <label htmlFor="wd-chkbox-entry">Text Entry</label><br/>
-
-            <input type="checkbox" name="options" id="wd-chkbox-url"/>
-            <label htmlFor="wd-chkbox-url">Website URL</label><br/>
-
-            <input type="checkbox" name="options" id="wd-chkbox-url"/>
-            <label htmlFor="wd-chkbox-url">Media Recordings</label><br/>
-
-            <input type="checkbox" name="options" id="wd-chkbox-url"/>
-            <label htmlFor="wd-chkbox-url">Student Annotation</label>
-            <br />
-
-            <input type="checkbox" name="options" id="wd-chkbox-upload"/>
-            <label htmlFor="wd-chkbox-upload">File Uploads</label>
-            </td>
-            </tr>
-
-            <br />
-        
-          </tr>
-          <br></br>
-          <tr>
-            <td align="right" valign="top">
-              <label htmlFor="wd-points">Assign</label>
-              </td>
-              <td>
-              <label>Assign to</label> <br />
-              <input id="wd-name" defaultValue="Everyone" /><br /><br />
-
-              <label>Due</label> <br />
-              <input type="date"
-                    defaultValue="2024-05-13"
-                    id="wd-text-fields-due"/><br /> <br />
-                   
-           
-            <label>Available From&emsp;&nbsp;&nbsp;Until</label> <br />
-                   <input type="date"
-                    defaultValue="2024-05-06"
-                    id="wd-text-fields-due"/> <input type="date"
-                    defaultValue="2024-05-20"
-                    id="wd-text-fields-due"/>
-           </td>
-          </tr>
-          <br />
-         
-        </table>
-         
-      </div>
-
-      <div>
-        <hr />
-        <div style={{textAlign: 'right', padding:'10px 170px'}}>
-        <button>Cancel</button> <button>Save</button>
-        </div>
-           
-            
-
-      </div>
-      </>
-      
-   */}
