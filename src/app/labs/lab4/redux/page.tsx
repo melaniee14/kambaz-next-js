@@ -1,18 +1,23 @@
+"use client";
 import AddRedux from "./AddRedux";
 import CounterRedux from "./CounterRedux";
 import HelloRedux from "./hello";
+import store from "../store";
+import { Provider } from "react-redux";
 
 export default function ReduxExamples() {
     return (
-      <div>
-        <h2>Redux Examples</h2>
+      <Provider store={store}>
+        <div>
+          <h2>Redux Examples</h2>
 
-        <HelloRedux/>
+          <HelloRedux/>
 
-        <CounterRedux/>
+          <CounterRedux/>
 
-        <AddRedux/>
-      </div>
+          <AddRedux/>
+        </div>
+      </Provider>
     );
    }
    
