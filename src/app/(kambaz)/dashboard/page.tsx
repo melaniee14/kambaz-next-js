@@ -20,14 +20,30 @@ export default function Dashboard() {
   const isEnrolled = (courseId: string) => enrollments.some((enrollment) =>
     enrollment.user === currentUser?._id &&
     enrollment.course === courseId);
+
+ 
   
 
  
   const [course, setCourse] = useState<any>({
     _id: "0", name: "New Course", number: "New Number",
     startDate: "2023-09-10", endDate: "2023-12-15",
-    image: "../../../../public/images/RS101.jpg", description: "New Description"
+    image: "/public/images/RS101.jpg", description: "New Description"
   });
+
+  const addCourse = () => {
+    const newId = new Date().getTime().toString();
+    const newCourse = { ...course, _id: newId };
+    dispatch(addNewCourse(newCourse));
+    dispatch(enroll({userId: currentUser?._id, courseId: newId}));
+
+    setCourse ({
+      _id: "0", name: "New Course", number: "New Number",
+    startDate: "2023-09-10", endDate: "2023-12-15",
+    image: "/public/images/RS101.jpg", description: "New Description"
+    });
+
+  }
 
  
  return (
@@ -35,8 +51,7 @@ export default function Dashboard() {
     <div id="dashboard-enrollments"> 
       <Button onClick={() => setShow(!show)} className="float-end" variant="primary"> Enrollments </Button>
       <h1 id="wd-dashboard-title">Dashboard</h1> 
-
-
+      
       <hr />
     
    </div>
@@ -45,7 +60,7 @@ export default function Dashboard() {
       <><h5> New Course
          <button className="btn btn-primary float-end"
            id="wd-add-new-course-click"
-           onClick={() => dispatch(addNewCourse(course))}> Add </button>
+           onClick={addCourse}> Add </button>
 
          <button className="btn btn-warning float-end me-2"
            onClick={() => dispatch(updateCourse(course))} id="wd-update-course-click">
