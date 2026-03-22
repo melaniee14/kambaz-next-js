@@ -1,11 +1,11 @@
 "use client";
-import { Row, FormLabel, Col, FormControl, FormSelect, Button, Card, CardBody, CardImg, CardText, CardTitle, FormCheck, InputGroup } from "react-bootstrap";
+import { Row, FormLabel, Col, FormControl, FormSelect, Button, Card, CardBody, FormCheck, InputGroup } from "react-bootstrap";
 import InputGroupText from "react-bootstrap/esm/InputGroupText";
 import { MdCalendarMonth } from "react-icons/md";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
-import { updateAssignment, deleteAssignment } from "../reducer";
+import { addAssignment, updateAssignment, deleteAssignment } from "../reducer";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -13,160 +13,168 @@ import { useRouter } from "next/navigation";
 
 
 export default function AssignmentEditor() {
-const { aid } = useParams();
-const router = useRouter();
-const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
-const dispatch = useDispatch();
+  const { cid, aid } = useParams();
+  const router = useRouter();
+  const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
+  const dispatch = useDispatch();
 
-const currentAssignment = assignments.find((a:any) => a._id === aid);
-const [editedAssignment, setEditedAssignment] = useState<any>(currentAssignment);
+  const currentAssignment = assignments.find((a: any) => a._id === aid);
+  const [editedAssignment, setEditedAssignment] = useState<any>(
+    currentAssignment || {
+      _id: aid,
+      title: "New Assignment",
+      course: cid,
+      available: "",
+      due: "",
+      points: 100,
+      desc: "",
+      new: true,
+    }
+  );
 
-const updateAssignmentsInEditor = () => {
-  dispatch(updateAssignment(editedAssignment));
-
-  router.push(`/courses/${editedAssignment.course}/assignments`);
-}
-
-const deleteOrNot = () => {
-  if(editedAssignment.new) {
-    dispatch(deleteAssignment(editedAssignment._id));
-    router.push(`/courses/${editedAssignment.course}/assignments/`);
-
+  const updateAssignmentsInEditor = () => {
+    const exists = assignments.some((a: any) => a._id === editedAssignment._id);
+    if (exists) {
+      dispatch(updateAssignment(editedAssignment));
+    } else {
+      dispatch(addAssignment(editedAssignment));
+    }
+    router.push(`/courses/${editedAssignment.course}/assignments`);
   }
-  else {
-    router.push(`/courses/${editedAssignment.course}/assignments/`);
-  }
-}
 
-    return (
+  const deleteOrNot = () => {
+    if (editedAssignment.new) {
+      dispatch(deleteAssignment(editedAssignment._id));
+      router.push(`/courses/${editedAssignment.course}/assignments/`);
+    }
+    else {
+      router.push(`/courses/${editedAssignment.course}/assignments/`);
+    }
+  }
+
+  return (
+    <div>
+      <div className="mb-3">
+        <FormLabel> Assignment Name</FormLabel>
+        <FormControl onChange={(e) =>
+          setEditedAssignment({ ...editedAssignment, title: e.target.value })} type="name" placeholder={editedAssignment.title} />
+      </div>
+
+      <div className="mb-4">
+        <FormControl onChange={(e) =>
+          setEditedAssignment({ ...editedAssignment, desc: e.target.value })} as="textarea" rows={8} placeholder={editedAssignment.desc} />
+      </div>
+
       <div>
-        {assignments
-        .filter((assignment: any) => assignment._id=== aid)
-        .map((assignment: any) => (
-      <>
-         <div className="mb-3">
-            <FormLabel> Assignment Name</FormLabel>
-            <FormControl onChange={(e) => 
-                    setEditedAssignment({...editedAssignment, title: e.target.value})} type="name" placeholder={assignment.title} />
-          </div> 
+        <Row className="mb-3 offset-sm-1" controlId="points">
+          <FormLabel column sm={2}> Points </FormLabel>
+          <Col sm={10}>
+            <FormControl onChange={(e) =>
+              setEditedAssignment({ ...editedAssignment, points: e.target.value })} type="number" defaultValue={editedAssignment.points} />
+          </Col>
+        </Row>
 
-          <div className="mb-4">
-              <FormControl onChange={(e) => 
-                    setEditedAssignment({...editedAssignment, desc: e.target.value})} as="textarea" rows={8} placeholder={assignment.desc}  />
-            </div>
-            
-          <div>
-              <Row className="mb-3 offset-sm-1" controlId="points">
-                <FormLabel column sm={2}> Points </FormLabel>
-                <Col sm={10}>
-                  <FormControl onChange={(e) => 
-                    setEditedAssignment({...editedAssignment, points: e.target.value})} type="number" defaultValue={assignment.points} />
-                </Col>
-              </Row>
+        <Row className="mb-3 offset-sm-1" controlid="points">
+          <FormLabel column sm={2}>Assignment Group</FormLabel>
+          <Col sm={10}>
+            <FormSelect>
+              <option value="0" defaultChecked>ASSIGNMENTS</option>
+            </FormSelect>
+          </Col>
+        </Row>
 
-              <Row className="mb-3 offset-sm-1" controlid="points">
-                <FormLabel column sm={2}>Assignment Group</FormLabel>
-                <Col sm={10}>
-                  <FormSelect>
-                    <option value="0" defaultChecked>ASSIGNMENTS</option>
+        <Row className="mb-3 offset-sm-1" controlId="points">
+          <FormLabel column sm={2}>Display Grade as</FormLabel>
+          <Col sm={10}>
+            <FormSelect>
+              <option value="0" defaultChecked>Percentage</option>
+            </FormSelect>
+          </Col>
+        </Row>
+
+        <div id="wd-css-navigating-with-cards">
+          <Row className="mb-3 offset-sm-1" controlId="assign">
+            <FormLabel column sm={2}>Submission Type</FormLabel>
+            <Col sm={10}>
+              <Card className="w-55">
+                <CardBody>
+                  <FormSelect className="mb-3">
+                    <option value="0" defaultChecked>Online</option>
                   </FormSelect>
-                </Col>
-              </Row>
 
-              <Row className="mb-3 offset-sm-1" controlId="points">
-                <FormLabel column sm={2}>Display Grade as</FormLabel>
-                <Col sm={10}>
-                  <FormSelect>
-                    <option value="0" defaultChecked>Percentage</option>
-                  </FormSelect>
-                </Col>
-              </Row>
+                  <FormLabel className="fw-bold mb-3">Online Entry Options </FormLabel>
+                  <FormCheck className="mb-3" type="checkbox" label="Text Entry" name="formSubmissionType" />
+                  <FormCheck className="mb-3" type="checkbox" label="Website URL" name="formSubmissionType" defaultChecked />
+                  <FormCheck className="mb-3" type="checkbox" label="Media Recordings" name="formSubmissionType" />
+                  <FormCheck className="mb-3" type="checkbox" label="Student Annotation" name="formSubmissionType" />
+                  <FormCheck className="mb-3" type="checkbox" label="File Uploads" name="formSubmissionType" />
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </div>
 
-              <div id="wd-css-navigating-with-cards">
-                <Row className="mb-3 offset-sm-1" controlId="assign">
-                  <FormLabel column sm={2}>Submission Type</FormLabel>
-                  <Col sm={10}>
-                    <Card className="w-55">
-                      <CardBody>
-                        <FormSelect className="mb-3">
-                          <option value="0" defaultChecked>Online</option>
-                        </FormSelect>
+        <div id="wd-css-navigating-with-cards">
+          <Row className="mb-3 offset-sm-1" controlId="assign">
+            <FormLabel column sm={2}>Assign</FormLabel>
+            <Col sm={10}>
+              <Card className="w-55">
+                <CardBody>
+                  <FormLabel className="fw-bold">Assign To</FormLabel>
 
-                        <FormLabel className="fw-bold mb-3">Online Entry Options </FormLabel>
-                        <FormCheck className="mb-3" type="checkbox" label="Text Entry" name="formSubmissionType" />
-                        <FormCheck className="mb-3" type="checkbox" label="Website URL" name="formSubmissionType" defaultChecked />
-                        <FormCheck className="mb-3" type="checkbox" label="Media Recordings" name="formSubmissionType" />
-                        <FormCheck className="mb-3" type="checkbox" label="Student Annotation" name="formSubmissionType" />
-                        <FormCheck className="mb-3" type="checkbox" label="File Uploads" name="formSubmissionType" />
-                      </CardBody>
-                    </Card>
-                  </Col>
-                </Row>
-              </div>
+                  <FormControl className="mb-3" type="text" placeholder="Everyone" />
 
-              <div id="wd-css-navigating-with-cards">
-                <Row className="mb-3 offset-sm-1" controlId="assign">
-                  <FormLabel column sm={2}>Assign</FormLabel>
-                  <Col sm={10}>
-                    <Card className="w-55">
-                      <CardBody>
-                        <FormLabel className="fw-bold">Assign To</FormLabel>
+                  <FormLabel className="fw-bold">Due</FormLabel>
+                  <InputGroup>
+                    <FormControl onChange={(e) =>
+                      setEditedAssignment({ ...editedAssignment, due: e.target.value })}
+                      className="mb-3" type="text" placeholder={editedAssignment.due} />
+                    <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
+                  </InputGroup>
 
-                        <FormControl className="mb-3" type="text" placeholder="Everyone" />
+                  <Row className="mb-3">
+                    <Col>
+                      <FormLabel className="fw-bold">  Available From </FormLabel>
+                      <InputGroup>
+                        <FormControl onChange={(e) =>
+                          setEditedAssignment({ ...editedAssignment, available: e.target.value })} className="mb-3" type="text" placeholder={editedAssignment.available} />
+                        <InputGroupText className="mb-3 gap-2"> <MdCalendarMonth /> </InputGroupText>
+                      </InputGroup>
+                    </Col>
 
-                        <FormLabel className="fw-bold">Due</FormLabel>
-                        <InputGroup>
-                          <FormControl onChange={(e) => 
-                            setEditedAssignment({...editedAssignment, due: e.target.value})} 
-                            className="mb-3" type="text" placeholder={assignment.due} />
-                          <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
-                        </InputGroup>
+                    <Col>
+                      <FormLabel className="fw-bold">Until</FormLabel>
+                      <InputGroup>
 
-                        <Row className="mb-3">
-                          <Col>
-                            <FormLabel className="fw-bold">  Available From </FormLabel>
-                            <InputGroup>
-                              <FormControl onChange={(e) => 
-                                setEditedAssignment({...editedAssignment, available: e.target.value})} className="mb-3" type="text" placeholder={assignment.available} />
-                              <InputGroupText className="mb-3 gap-2"> <MdCalendarMonth /> </InputGroupText>
-                            </InputGroup>
-                          </Col>
-
-                          <Col>
-                            <FormLabel className="fw-bold">Until</FormLabel>
-                            <InputGroup>
-
-                              <FormControl onChange={(e) => 
-                                  setEditedAssignment({...editedAssignment, until: e.target.value})}
-                                  className="mb-3" type="text" placeholder = {assignment.until} />
-                              <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
-                            </InputGroup>
-                          </Col>
-                        </Row>
+                        <FormControl onChange={(e) =>
+                          setEditedAssignment({ ...editedAssignment, until: e.target.value })}
+                          className="mb-3" type="text" placeholder={editedAssignment.until} />
+                        <InputGroupText className="mb-3"> <MdCalendarMonth /> </InputGroupText>
+                      </InputGroup>
+                    </Col>
+                  </Row>
 
 
-                      </CardBody>
+                </CardBody>
 
-                    </Card>
-                  </Col>
-                </Row>
-              </div>
-            </div><hr />
-            <Row className="mb-3 offset-sm-9">
-              <Col> 
-             
-              <Button id="wd-cancel-btn" variant = "secondary"
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      </div><hr />
+      <Row className="mb-3 offset-sm-9">
+        <Col>
+
+          <Button id="wd-cancel-btn" variant="secondary"
             onClick={deleteOrNot}
             className="w-40 mb-2">
-            Cancel </Button>  <Button id="wd-save-btn" variant ="danger"
-            onClick={updateAssignmentsInEditor}
-            className="w-40 mb-2">
+            Cancel </Button>  <Button id="wd-save-btn" variant="danger"
+              onClick={updateAssignmentsInEditor}
+              className="w-40 mb-2">
             Save </Button>
-              </Col>
-            </Row>
-            </>
+        </Col>
+      </Row>
+    </div>
 
-       ))}
-</div>
-
-   )};
+  )
+};
