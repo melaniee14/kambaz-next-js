@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import * as client from "../../client";
 import { Button, FormControl, InputGroup, ListGroup, ListGroupItem } from "react-bootstrap";
 import { CiSearch } from "react-icons/ci";
 import { FaPlus, FaTrash } from "react-icons/fa6";
@@ -8,32 +8,34 @@ import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { PiNotePencilThin } from "react-icons/pi";
 import GreenCheckmark from "../modules/GreenCheckmark";
-import { redirect, useParams, useRouter } from "next/navigation";
-import { v4 as uuidv4 } from "uuid";
-import { addAssignment, editAssignment, updateAssignment, deleteAssignment }
+import {useParams } from "next/navigation";
+import {addAssignment, setAssignments }
   from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
 import "../../../../(kambaz)/styles.css"
 import { useState } from "react";
 import DeleteAssignment from "./DeleteAssignment";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
 
 
 
 
 
 export default function Assignments() {
-  const router = useRouter();
+
   const { cid } = useParams();
+  const router = useRouter();
   const {assignments} = useSelector((state: RootState) => state.assignmentsReducer);
   const dispatch = useDispatch();
   const [asgnToDel, setAsgnmntToDel] = useState<string | null>();
   const handleClose = () => setAsgnmntToDel(null);
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   
-  
+
   const createNewAssignment = () => {
-    const aid = "New Assignment";
+    const aid = uuidv4();
 
     if(currentUser?.role != "STUDENT") {
       const newAssignment = {
@@ -43,6 +45,7 @@ export default function Assignments() {
         available: "",
         due: "",
         points: 100,
+        newAssign: true,
       };
   
       dispatch(addAssignment(newAssignment));
@@ -51,9 +54,6 @@ export default function Assignments() {
     
   }
 
-
-
-  
 
     return (
       <div id="wd-assignments">

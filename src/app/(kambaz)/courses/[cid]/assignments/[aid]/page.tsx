@@ -11,8 +11,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 
-
-
 export default function AssignmentEditor() {
   const { aid, cid } = useParams();
   const router = useRouter();
@@ -35,7 +33,7 @@ export default function AssignmentEditor() {
   }
 
   const deleteOrNot = () => {
-    if (currentAssignment?.newAssign) {
+    if ((currentAssignment as any)?.newAssign) {
       dispatch(deleteAssignment(editedAssignment._id));
       router.push(`/courses/${cid}/assignments/`);
     }
