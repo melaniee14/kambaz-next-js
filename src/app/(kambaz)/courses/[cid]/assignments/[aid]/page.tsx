@@ -6,34 +6,26 @@ import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
 import { addAssignment, updateAssignment, deleteAssignment } from "../reducer";
-
+import { v4 as uuidv4 } from "uuid";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 
 
+
 export default function AssignmentEditor() {
-  const { cid, aid } = useParams();
+  const { aid, cid } = useParams();
   const router = useRouter();
   const { assignments } = useSelector((state: RootState) => state.assignmentsReducer);
   const dispatch = useDispatch();
 
   const currentAssignment = assignments.find((a: any) => a._id === aid);
   const [editedAssignment, setEditedAssignment] = useState<any>(
-    currentAssignment || {
-      _id: aid,
-      title: "New Assignment",
-      course: cid,
-      available: "",
-      due: "",
-      points: 100,
-      desc: "",
-      new: true,
-    }
+    currentAssignment
   );
 
   const updateAssignmentsInEditor = () => {
-    const exists = assignments.some((a: any) => a._id === editedAssignment._id);
+    const exists = assignments.find((a: any) => a._id === editedAssignment._id);
     if (exists) {
       dispatch(updateAssignment(editedAssignment));
     } else {
@@ -43,12 +35,12 @@ export default function AssignmentEditor() {
   }
 
   const deleteOrNot = () => {
-    if (editedAssignment.new) {
+    if (currentAssignment?.newAssign) {
       dispatch(deleteAssignment(editedAssignment._id));
-      router.push(`/courses/${editedAssignment.course}/assignments/`);
+      router.push(`/courses/${cid}/assignments/`);
     }
     else {
-      router.push(`/courses/${editedAssignment.course}/assignments/`);
+      router.push(`/courses/${cid}/assignments/`);
     }
   }
 
