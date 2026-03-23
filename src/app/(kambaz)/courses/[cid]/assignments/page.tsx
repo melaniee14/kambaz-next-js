@@ -1,5 +1,4 @@
 "use client";
-import * as client from "../../client";
 import { Button, FormControl, InputGroup, ListGroup, ListGroupItem } from "react-bootstrap";
 import { CiSearch } from "react-icons/ci";
 import { FaPlus, FaTrash } from "react-icons/fa6";
