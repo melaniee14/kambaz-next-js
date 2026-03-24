@@ -13,12 +13,11 @@ import {addAssignment, setAssignments }
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
 import "../../../../(kambaz)/styles.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DeleteAssignment from "./DeleteAssignment";
 import { useRouter } from "next/navigation";
 import { v4 as uuidv4 } from "uuid";
-
-
+import * as client from "./client";
 
 
 
@@ -33,8 +32,10 @@ export default function Assignments() {
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
   
 
-  const createNewAssignment = () => {
+  const onCreateNewAssignment = async () => {
+    if(!cid) return;
     const aid = uuidv4();
+
 
     if(currentUser?.role != "STUDENT") {
       const newAssignment = {
@@ -46,12 +47,21 @@ export default function Assignments() {
         points: 100,
         newAssign: true,
       };
+      const assignment = await client.createAssignmentForCourse(cid, newAssignment);
   
-      dispatch(addAssignment(newAssignment));
-      router.push(`/courses/${cid}/assignments/${aid}`);
+      dispatch(setAssignments([...assignments, assignment]));
     }
     
   }
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  }
+  
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
 
 
     return (
@@ -70,7 +80,7 @@ export default function Assignments() {
               <FaPlus className="me-2 fs-5" /> Group 
             </Button>
           
-            <Button onClick={createNewAssignment} 
+            <Button onClick={onCreateNewAssignment} 
             variant="danger" size="sm" className="w-100 text-nowrap ">
               <FaPlus className="me-2 fs-5" /> Assignment
             </Button>
@@ -97,9 +107,7 @@ export default function Assignments() {
         </div>
       </div>
       
-      {assignments
-          .filter((assignment: any) => assignment.course === cid)
-          .map((assignment: any) => (
+      {assignments.map((assignment: any) => (
       <ListGroup className="wd-lessons rounded-0">
         <ListGroupItem className="wd-lesson p-3 ps-1">
           <div className="d-flex align-items-center justify-content-between">

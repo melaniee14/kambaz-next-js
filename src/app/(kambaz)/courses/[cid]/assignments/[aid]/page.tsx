@@ -5,10 +5,10 @@ import { MdCalendarMonth } from "react-icons/md";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
-import { addAssignment, updateAssignment, deleteAssignment } from "../reducer";
-import { v4 as uuidv4 } from "uuid";
+import { addAssignment, updateAssignment, deleteAssignment, setAssignments } from "../reducer";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import * as client from "../client";
 
 
 export default function AssignmentEditor() {
@@ -22,24 +22,38 @@ export default function AssignmentEditor() {
     currentAssignment
   );
 
-  const updateAssignmentsInEditor = () => {
+  const onUpdateAssignmentsInEditor =  async () => {
     const exists = assignments.find((a: any) => a._id === editedAssignment._id);
-    if (exists) {
-      dispatch(updateAssignment(editedAssignment));
+    if (exists && !exists.newAssign) {
+      await client.updateAssignment(editedAssignment);
+      const newAssignments = assignments.map((a: any) => a._id === editedAssignment._id ? editedAssignment : a);
+      dispatch(setAssignments(newAssignments));
     } else {
-      dispatch(addAssignment(editedAssignment));
+      const assignmentToAdd = await client.createAssignmentForCourse(cid, editedAssignment);
+
+      dispatch(setAssignments([...assignments, assignmentToAdd]));
     }
     router.push(`/courses/${editedAssignment.course}/assignments`);
   }
 
-  const deleteOrNot = () => {
+  // const updateAssignmentsInEditor = () => {
+  //   const exists = assignments.find((a: any) => a._id === editedAssignment._id);
+  //   if (exists) {
+  //     dispatch(updateAssignment(editedAssignment));
+  //   } else {
+  //     dispatch(addAssignment(editedAssignment));
+  //   }
+  //   router.push(`/courses/${editedAssignment.course}/assignments`);
+  // }
+
+  const deleteOrNot = async () => {
     if ((currentAssignment as any)?.newAssign) {
-      dispatch(deleteAssignment(editedAssignment._id));
-      router.push(`/courses/${cid}/assignments/`);
+      await client.deleteAssignment(editedAssignment._id);
+      dispatch(setAssignments(assignments.filter((a: any) => a._id !== editedAssignment._id)));
+      
     }
-    else {
       router.push(`/courses/${cid}/assignments/`);
-    }
+    
   }
 
   return (
@@ -159,7 +173,7 @@ export default function AssignmentEditor() {
             onClick={deleteOrNot}
             className="w-40 mb-2">
             Cancel </Button>  <Button id="wd-save-btn" variant="danger"
-              onClick={updateAssignmentsInEditor}
+              onClick={onUpdateAssignmentsInEditor}
               className="w-40 mb-2">
             Save </Button>
         </Col>
