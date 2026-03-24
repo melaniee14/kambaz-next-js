@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from "react";
 import { TiDelete } from "react-icons/ti";
 import * as client from "./client";
