@@ -50,6 +50,7 @@ export default function Assignments() {
       const assignment = await client.createAssignmentForCourse(cid, newAssignment);
   
       dispatch(setAssignments([...assignments, assignment]));
+      router.push(`/courses/${cid}/assignments/${assignment._id}`);
     }
     
   }

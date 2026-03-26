@@ -5,7 +5,7 @@ import { MdCalendarMonth } from "react-icons/md";
 import { useParams } from "next/navigation";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../../store";
-import { addAssignment, updateAssignment, deleteAssignment, setAssignments } from "../reducer";
+import { setAssignments } from "../reducer";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import * as client from "../client";
