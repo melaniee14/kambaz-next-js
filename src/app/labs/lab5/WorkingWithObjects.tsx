@@ -50,7 +50,7 @@ export default function WorkingWithObjects() {
          className="btn btn-primary float-end"
          href={`${MODULE_API_URL}/name/${module.name}`}>
         Update Module Name </a>
-      <FormControl className="w-75" id="wd-module-name"
+      <FormControl className="w-50" id="wd-module-name"
         defaultValue={module.name} onChange={(e) =>
           setModule({ ...module, name: e.target.value })}/>
           
@@ -58,7 +58,7 @@ export default function WorkingWithObjects() {
          className="btn btn-primary float-end"
          href={`${MODULE_API_URL}/description/${module.description}`}>
         Update Module Description </a>
-      <FormControl className="w-75" id="wd-module-description"
+      <FormControl className="w-50" id="wd-module-description"
         defaultValue={module.description} onChange={(e) =>
           setModule({ ...module, description: e.target.value })}/>
 

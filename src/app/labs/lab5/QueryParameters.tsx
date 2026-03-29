@@ -1,11 +1,14 @@
+"use client"
 import { useState } from "react";
 import { FormControl } from "react-bootstrap";
 
 const HTTP_SERVER = process.env.NEXT_PUBLIC_HTTP_SERVER;
-const [a, setA] = useState("34");
-const [b, setB] = useState("23");
+
 
 export default function QueryParameters() {
+  const [a, setA] = useState("34");
+const [b, setB] = useState("23");
+  return (
 <div id="wd-query-parameters">
   <h3>Query Parameters</h3>
   <FormControl id="wd-query-parameter-a"
@@ -19,14 +22,17 @@ export default function QueryParameters() {
   <a id="wd-query-parameter-add"
      href={`${HTTP_SERVER}/lab5/calculator?operation=add&a=${a}&b=${b}`}>
     Add {a} + {b}
+    <br/>
   </a>
   <a id="wd-query-parameter-subtract"
      href={`${HTTP_SERVER}/lab5/calculator?operation=subtract&a=${a}&b=${b}`}>
     Substract {a} - {b}
+    <br/>
   </a>
   <a id="wd-query-parameter-multiply"
      href={`${HTTP_SERVER}/lab5/calculator?operation=multiply&a=${a}&b=${b}`}>
     Multiply {a} * {b}
+    <br/>
   </a>
   <a id="wd-query-parameter-divide"
      href={`${HTTP_SERVER}/lab5/calculator?operation=divide&a=${a}&b=${b}`}>
@@ -35,5 +41,5 @@ export default function QueryParameters() {
   
   <hr />
 </div>
-
+  )
 }

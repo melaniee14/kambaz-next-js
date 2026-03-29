@@ -64,7 +64,7 @@ export default function Dashboard() {
 
   const onAddNewCourse = async () => {
     const newCourse = await client.createCourse(course);
-    dispatch(setCourses([ ...courses, newCourse ]));
+    setAllCourses([ ...allCourses, newCourse ]);
   };
 
   const onDeleteCourse = async (courseId: string) => {
@@ -233,7 +233,12 @@ export default function Dashboard() {
                 const newEnrollments = enrollments.filter((e: any) =>
                   !(e.user === currentUser?._id && e.course === course._id));
 
+                const newCourses = courses.filter((c : any) => !(c._id === course._id));
+
                 dispatch(setEnrollments(newEnrollments));
+                dispatch(setCourses(newCourses));
+
+                
               }
               else {
                 await enrollmentClient.enrollUserInCourse(course._id);
@@ -243,6 +248,7 @@ export default function Dashboard() {
                 }
                 
                 dispatch(setEnrollments([...enrollments, newEnrollment]));
+                dispatch(setCourses([...courses, course]));
 
               }}}> {isEnrolled(course._id) ? "Unenroll" : "Enroll"}
              

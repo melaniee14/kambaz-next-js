@@ -60,8 +60,6 @@ export default function WorkingWithArraysAsynchronously() {
 
   };
 
-
-
   useEffect(() => {
     fetchTodos();
   }, []);
@@ -87,21 +85,20 @@ export default function WorkingWithArraysAsynchronously() {
 
             <input type="checkbox" className="form-check-input me-2" defaultChecked={todo.completed}  
                 onChange={(e) => updateTodo({ ...todo, completed: e.target.checked }) } />
-                   {!todo.editing ? ( todo.title ) : (
-                     <FormControl className="w-50 float-start" defaultValue={todo.title}
-                       onKeyDown={(e) => {
-                         if (e.key === "Enter") {
-                           updateTodo({ ...todo, editing: false });
-                         }
-                       }}
-                       onChange={(e) =>
-                         updateTodo({ ...todo, title: e.target.value })
-                       }
-                     />
-                   )}
-     
-            <span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
-              {todo.title} </span>
+                  {!todo.editing ? (<span style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
+                    {todo.title} </span>) : (
+                <FormControl className="w-50 float-start" defaultValue={todo.title}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      updateTodo({ ...todo, editing: false });
+                    }
+                  }}
+                  onChange={(e) =>
+                    updateTodo({ ...todo, title: e.target.value })
+                  }
+                />
+              )}
+            
           </ListGroupItem>
         ))}
       </ListGroup> <hr />
