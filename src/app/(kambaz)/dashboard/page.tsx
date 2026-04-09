@@ -70,6 +70,7 @@ export default function Dashboard() {
   const onDeleteCourse = async (courseId: string) => {
     const status = await client.deleteCourse(courseId);
     dispatch(setCourses(courses.filter((course) => course._id !== courseId)));
+    setAllCourses(allCourses.filter((course) => course._id !== courseId));
   };
 
   const onUpdateCourse = async () => {
