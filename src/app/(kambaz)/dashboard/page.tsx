@@ -31,6 +31,15 @@ export default function Dashboard() {
     image: "/public/images/RS101.jpg", description: "New Description"
   });
 
+  const fetchEnrollments = async () => {
+    try {
+      const enrollments = await client.fetchEnrollments();
+      dispatch(setEnrollments(enrollments));
+    } catch(error) {
+      console.error(error);
+    }
+  }
+
 
   const fetchCourses = async () => {
     try {
@@ -40,8 +49,10 @@ export default function Dashboard() {
       console.error(error);
     }
   };
+
   useEffect(() => {
     fetchCourses();
+    fetchEnrollments();
   }, [currentUser]);
 
 
@@ -59,6 +70,8 @@ export default function Dashboard() {
   useEffect(() => {
     fetchAllCourses();
   }, []);
+
+  
   
 
 
@@ -152,30 +165,6 @@ export default function Dashboard() {
             </button> }
 
 
-          <Button className="float-end"variant={isEnrolled(course._id) ? "danger" : "success"} 
-               onClick={async () =>  
-                
-                {if(isEnrolled(course._id)) {
-
-                await enrollmentClient.unenrollUserInCourse(course._id);
-
-                const newEnrollments = enrollments.filter((e: any) =>
-                  !(e.user === currentUser?._id && e.course === course._id));
-
-                dispatch(setEnrollments(newEnrollments));
-              }
-              else {
-                await enrollmentClient.enrollUserInCourse(course._id);
-
-                const newEnrollment = {
-                  user: currentUser?._id, _id: currentUser?._id, course: course._id
-                }
-                
-                dispatch(setEnrollments([...enrollments, newEnrollment]));
-
-              }}}> {isEnrolled(course._id) ? "Unenroll" : "Enroll"}
-             
-                </Button>
             
         </CardBody>
        
@@ -184,7 +173,7 @@ export default function Dashboard() {
     ))}
   
 
-    {show &&  allCourses.map((course) => (
+    {show && allCourses.map((course) => (
      <Col className="wd-dashboard-course" style={{ width: "300px" }}>
       <Card>
         <CardImg src={`/images/${course._id}.jpg`} variant="top" width="100%" height={160} />
