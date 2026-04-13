@@ -15,14 +15,17 @@ export default function PeopleDetails({ uid, onClose }: { uid: string | null; on
   const [user, setUser] = useState<any>({});
   const fetchUser = async () => {
     if (!uid) return;
-    const user = await client.findUserById(uid);
-    setUser(user);
+    const userDetails = await client.findUserById(uid);
+    setUser(userDetails);
+    setName(`${userDetails.firstName} ${userDetails.lastName}`);
   };
 
   const [name, setName] = useState("");
   const [editing, setEditing] = useState(false);
   const saveUser = async () => {
-    const [firstName, lastName] = name.split(" ");
+    const fullName = name.split(" ");
+    const firstName = fullName[0];
+    const lastName = fullName.slice(1).join(" ");
     const updatedUser = { ...user, firstName, lastName };
     await client.updateUser(updatedUser);
     setUser(updatedUser);
