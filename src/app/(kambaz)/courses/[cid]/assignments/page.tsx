@@ -1,21 +1,69 @@
-import Link from "next/link";
+"use client";
 import { Button, FormControl, InputGroup, ListGroup, ListGroupItem } from "react-bootstrap";
-import { BsGripVertical } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
-import { FaPlus } from "react-icons/fa6";
-import LessonControlButtons from "../modules/LessonControlButtons";
-import ModuleControlButtons from "./ButtonsAfterTitle";
+import { FaPlus, FaTrash } from "react-icons/fa6";
 import { TbGripVertical } from "react-icons/tb";
 import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import { PiNotePencilThin } from "react-icons/pi";
 import GreenCheckmark from "../modules/GreenCheckmark";
-import { ReactNode } from "react";
-
+import {useParams } from "next/navigation";
+import {addAssignment, setAssignments }
+  from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../../../store";
+import "../../../../(kambaz)/styles.css"
+import { useEffect, useState } from "react";
+import DeleteAssignment from "./DeleteAssignment";
+import { useRouter } from "next/navigation";
+import { v4 as uuidv4 } from "uuid";
+import * as client from "./client";
 
 
 
 export default function Assignments() {
+
+  const { cid } = useParams();
+  const router = useRouter();
+  const {assignments} = useSelector((state: RootState) => state.assignmentsReducer);
+  const dispatch = useDispatch();
+  const [asgnToDel, setAsgnmntToDel] = useState<string | null>();
+  const handleClose = () => setAsgnmntToDel(null);
+  const { currentUser } = useSelector((state: RootState) => state.accountReducer);
+  
+
+  const onCreateNewAssignment = async () => {
+    if(!cid) return;
+    const aid = uuidv4();
+
+
+    if(currentUser?.role != "STUDENT") {
+      const newAssignment = {
+        _id: aid,
+        title: "New Assignment",
+        course: cid,
+        available: "",
+        due: "",
+        points: 100,
+        newAssign: true,
+      };
+      const assignment = await client.createAssignmentForCourse(cid, newAssignment);
+  
+      dispatch(setAssignments([...assignments, assignment]));
+      router.push(`/courses/${cid}/assignments/${assignment._id}`);
+    }
+    
+  }
+
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignmentsForCourse(cid as string);
+    dispatch(setAssignments(assignments));
+  }
+  
+  useEffect(() => {
+    fetchAssignments();
+  }, [cid]);
+
 
     return (
       <div id="wd-assignments">
@@ -27,26 +75,26 @@ export default function Assignments() {
               <FormControl type="search" placeholder="Search..." className="ps-5" />
           </div>
           
-
-          <div className="d-flex gap-1">
+      
+          {currentUser?.role != "STUDENT" && <div className="d-flex gap-1">
             <Button variant="secondary" size="sm" className="w-100 text-nowrap ">
               <FaPlus className="me-2 fs-5" /> Group 
             </Button>
           
-            <Button variant="danger" size="sm" className="w-100 text-nowrap ">
+            <Button onClick={onCreateNewAssignment} 
+            variant="danger" size="sm" className="w-100 text-nowrap ">
               <FaPlus className="me-2 fs-5" /> Assignment
             </Button>
-          </div>
+          </div> }
          </div>
 
 
-
-    <ListGroup className="rounded-0" id="wd-modules">
+  <ListGroup className="rounded-0" id="wd-assignments">
     <ListGroupItem className="wd-module p-0 mb-5 fs-5 border-gray">
       <div className="wd-title p-3 ps-2 bg-secondary"> 
         <div className="d-flex align-items-center justify-content-between">
           <div className="position-relative w-50">
-          <TbGripVertical/> <FaCaretDown /> Assignments  
+          <TbGripVertical/> <FaCaretDown /> ASSIGNMENTS
           </div>
 
           <div className="d-flex align-items-center gap-1">
@@ -59,7 +107,8 @@ export default function Assignments() {
           </div>
         </div>
       </div>
-
+      
+      {assignments.map((assignment: any) => (
       <ListGroup className="wd-lessons rounded-0">
         <ListGroupItem className="wd-lesson p-3 ps-1">
           <div className="d-flex align-items-center justify-content-between">
@@ -71,103 +120,37 @@ export default function Assignments() {
 
               <div>
                 <h5 className="mb-1"> 
-                  <Link href="/courses/1234/assignments/1"
-               className="wd-assignment-link" >
-              A1
-            </Link> </h5>
+                  <a href= {`/courses/${assignment.course}/assignments/${assignment._id}`}
+                className="wd-assignment-link" >
+              {assignment.title}  
+
+            </a> </h5>
                 <div className="fs-6">
                   <span className="text-warning">Multiple Modules</span> | 
-                <b> Not available until</b> May 6 at 12:00 am | </div>
+                <b> Not available until</b> {assignment.available} | </div>
                 <div className="fs-6">
-                <b>Due</b> May 13 at 11:59pm | 100 pts
+                <b>Due</b> {assignment.due} | {assignment.points} pts
                 </div>
               </div>
             </div>
 
-            <div className="d-flex align-items-center gap-2">
+            <div className="float-end d-flex justify-content-between gap-2 ">
+            
+            {currentUser?.role != "STUDENT" && 
+                <FaTrash onClick={() => {setAsgnmntToDel(assignment._id); }} className="text-danger" /> }
                 <GreenCheckmark/>
                 <IoEllipsisVertical/>
+
+                
+                <DeleteAssignment show={asgnToDel === assignment._id} handleClose={handleClose} aid={assignment._id} dialogTitle={"Are You Sure You Want to Delete?"} />
+           
             </div>
           </div>
         </ListGroupItem>
-      </ListGroup>
-
-      <ListGroup className="wd-lessons rounded-0">
-        <ListGroupItem className="wd-lesson p-3 ps-1">
-          <div className="d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center gap-2">
-              <div className="d-flex align-items-center gap-2">
-                <TbGripVertical className="fs-4" />
-                <PiNotePencilThin className="fs-5 text-success" />
-              </div>
-
-              <div>
-              <h5 className="mb-1"> <Link href="/courses/1234/assignments/2"
-               className="wd-assignment-link" >
-              A2
-            </Link> </h5>
-                <div className="fs-6">
-                  <span className="text-warning">Multiple Modules</span> | 
-                <b> Not available until</b> May 13 at 12:00 am | </div>
-                <div className="fs-6">
-                <b>Due</b> May 20 at 11:59pm | 100 pts
-                </div>
-              </div>
-            </div>
-
-            <div className="d-flex align-items-center gap-2">
-                <GreenCheckmark/>
-                <IoEllipsisVertical/>
-            </div>
-          </div>
-        </ListGroupItem>
-      </ListGroup>
-
-      <ListGroup className="wd-lessons rounded-0">
-        <ListGroupItem className="wd-lesson p-3 ps-1">
-          <div className="d-flex align-items-center justify-content-between">
-            <div className="d-flex align-items-center gap-2">
-              <div className="d-flex align-items-center gap-2">
-                <TbGripVertical className="fs-4" />
-                <PiNotePencilThin className="fs-5 text-success" />
-              </div>
-
-              <div>
-                <h5 className="mb-1"> <Link href="/courses/1234/assignments/3"
-               className="wd-assignment-link" >
-              A3
-            </Link> </h5>
-                <div className="fs-6">
-                  <span className="text-warning">Multiple Modules</span> | 
-                <b> Not available until</b> May 20 at 12:00 am | </div>
-                <div className="fs-6">
-                <b>Due</b> May 27 at 11:59pm | 100 pts
-                </div>
-              </div>
-            </div>
-
-            <div className="d-flex align-items-center gap-2">
-                <GreenCheckmark/>
-                <IoEllipsisVertical/>
-            </div>
-          </div>
-        </ListGroupItem>
-      </ListGroup>
-
-        
-    
+      </ListGroup> ))}
       </ListGroupItem>
     </ListGroup>
 
   
-</div>
-
-
-
-
-
-      
-      
+</div>   
   );}
-
-  
