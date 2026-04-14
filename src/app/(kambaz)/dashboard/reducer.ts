@@ -1,9 +1,8 @@
 "use client";
 import { createSlice } from "@reduxjs/toolkit";
-import { enrollments } from "../database";
 
 const initialState = {
-    enrollments: enrollments,
+    enrollments: [] as any [],
    };
 
 const enrollmentsSlice = createSlice({

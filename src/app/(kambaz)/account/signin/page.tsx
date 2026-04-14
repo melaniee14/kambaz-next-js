@@ -7,17 +7,19 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import * as db from "../../database";
 import { FormControl, Button } from "react-bootstrap";
-// inquire abt sign in button not working
+import { useRouter } from "next/navigation";
+
 
 export default function Signin() {
   const [credentials, setCredentials] = useState<any>({});
   const dispatch = useDispatch();
+  const router = useRouter();
   const signin =  async () => {
     const user =  await client.signin(credentials);
 
     if (!user) return;
     dispatch(setCurrentUser(user));
-    redirect("/dashboard");
+    router.push("/dashboard");
   };
  
   return (

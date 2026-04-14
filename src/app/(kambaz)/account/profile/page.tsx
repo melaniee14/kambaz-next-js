@@ -28,7 +28,7 @@ export default function Profile() {
 
  useEffect(() => {
    fetchProfile();
- }, []);
+ }, [currentUser]);
  return (
    <div className="wd-profile-screen">
      <h3>Profile</h3>
