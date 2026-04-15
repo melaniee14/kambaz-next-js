@@ -5,7 +5,6 @@ import { FaPlus, FaTrash } from "react-icons/fa6";
 import { TbGripVertical } from "react-icons/tb";
 import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
-import { PiNotePencilThin } from "react-icons/pi";
 import GreenCheckmark from "../modules/GreenCheckmark";
 import {useParams } from "next/navigation";
 import { setQuizzes }
