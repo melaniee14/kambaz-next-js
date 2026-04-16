@@ -60,7 +60,7 @@ export default function Quizzes() {
       const quiz = await client.createQuizForCourse(cid, newQuiz);
 
       dispatch(setQuizzes([...quizzes, quiz]));
-      router.push(`/courses/${cid}/quizzes/${quiz._id}`);
+      router.push(`/courses/${cid}/quizzes/${quiz._id}/details`);
     }
 
   }

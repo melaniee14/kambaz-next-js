@@ -6,7 +6,7 @@ const COURSES_API = `${HTTP_SERVER}/api/courses`;
 
 export const createQuizForCourse = async (courseId: any, quiz: any) => {
     const response = await axiosWithCredentials.post(
-        `${COURSES_API}/${courseId}/quizzes/${quiz._id}`,
+        `${COURSES_API}/${courseId}/quizzes`,
         quiz
     );
     return response.data;
