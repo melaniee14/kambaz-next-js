@@ -3,12 +3,12 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import * as client from "../../client";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { FaPencil } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../store";
 
-export default function QuizDetails () {
+export default function QuizDetails() {
   const router = useRouter();
   const { qid } = useParams();
   const { quizzes } = useSelector((state: RootState) => state.quizzesReducer);
@@ -16,52 +16,106 @@ export default function QuizDetails () {
   const { currentUser } = useSelector((state: RootState) => state.accountReducer);
 
   return (
-  <div>
+    <div>
 
-    {
-      currentUser?.role != "STUDENT" && 
-      <div> 
-      <div className="fs-6 d-flex align-items-center gap-2 offset-sm-4"> 
-      <Button variant="secondary"> Preview </Button>
-  
-      <Button variant="secondary" onClick={ () => router.push(`/courses/${quiz.course}/quizzes/${quiz._id}`)}> <FaPencil/> Edit </Button>
-      </div>
-      <br/>
+      {
+        currentUser?.role != "STUDENT" &&
+        <div>
+          <div className="fs-6 d-flex align-items-center gap-2 offset-sm-4">
+            <Button variant="secondary"> Preview </Button>
 
-      <b style={{ fontSize: '24px' }}> {quiz.title} </b>
-      <br/>
+            <Button variant="secondary" onClick={() => router.push(`/courses/${quiz.course}/quizzes/${quiz._id}`)}> <FaPencil /> Edit </Button>
+          </div>
+          <br />
 
-      <div className="fs-6 align-items-center gap-2 offset-sm-4" id="list">
-        <b> Quiz Type </b> <span className="ms-2">{quiz.quizType}</span>
-         <br/>
-        <b> Points </b> <span className="ms-2">{quiz.points}</span> <br/>
-        <b> Assignment Group </b> <span className="ms-2">{quiz.assignmentGroup}</span> <br/>
-        <b> Shuffle Answers </b> <span className="ms-2">{quiz.shuffleAnswers}</span> <br/>
-        <b> Time Limit </b> <span className="ms-2">{quiz.timeLmit} minutes</span> <br/>
-        <b> Multiple Attempts </b> <span className="ms-2">{quiz.multipleAttempts ? "Yes" : "No"}</span> <br/>
-        <b> Show Correct Answers </b> <span className="ms-2">{quiz.showCorrectAnswers}</span> <br/>
-        <b> One Question At a Time </b> <span className="ms-2">{quiz.oneQuestionAtATime ? "Yes" : "No"}</span> <br/>
-        <b> Webcam Required </b> <span className="ms-2">{quiz.webcamRequired ? "Yes" : "No"}</span> <br/>
-        <b> Lock Questions After Answering</b> <span className="ms-2">{quiz.lockQuestionsAfter ? "Yes" : "No"}</span> <br/>
+          <b className="offset-sm-2" style={{ fontSize: '24px' }}> {quiz.title} </b>
+          <br />
 
+          <div className="fs-6 align-items-center gap-2 offset-sm-1" id="list">
+            <Row>
+              <Col sm={4} className="text-end"> <b> Quiz Type </b> </Col>
+              <Col sm={8}>{quiz.quizType} </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end"> <b> Points </b> </Col>
+              <Col sm={8}>{quiz.points} </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end"> <b> Assignment Group </b> </Col>
+              <Col sm={8}>{quiz.assignmentGroup} </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end"> <b> Shuffle Answers </b> </Col>
+              <Col sm={8}>{quiz.shuffleAnswers} </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end"> <b> Time Limit </b> </Col>
+              <Col sm={8}>{quiz.timeLmit} minutes  </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end"><b> Multiple Attempts </b>  </Col>
+              <Col sm={8}>{quiz.multipleAttempts ? "Yes" : "No"}  </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end"> <b> Show Correct Answers </b> </Col>
+              <Col sm={8}>{quiz.showCorrectAnswers}  </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end">  <b> One Question At a Time </b> </Col>
+              <Col sm={8}>{quiz.oneQuestionAtATime ? "Yes" : "No"} </Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end">  <b> Webcam Required </b> </Col>
+              <Col sm={8}>{quiz.webcamRequired ? "Yes" : "No"}</Col>
+            </Row>
+
+            <Row>
+              <Col sm={4} className="text-end">  <b> Lock Questions After Answering </b> </Col>
+              <Col sm={8}>{quiz.lockQuestionsAfter ? "Yes" : "No"}</Col>
+            </Row>
+
+
+          </div>
+
+          <br />
         
 
 
+          <Row> 
+            <Col> <b> Due </b></Col>
+            <Col> <b> For </b></Col>
+            <Col> <b> Available From </b></Col>
+            <Col> <b> Until </b></Col>
+          </Row>
+          <hr/>
+          <Row>
+            <Col> {quiz.due} </Col>
+            <Col> Everyone </Col>
+            <Col> {quiz.available} </Col>
+            <Col> {quiz.due} </Col>
+          </Row>
+        </div>
+      }
 
-       </div> 
-      </div>
-    }
+
+
+      {
+        currentUser?.role == "STUDENT" && <Button variant="success"> Start </Button>
+      }
 
 
 
-    {
-      currentUser?.role == "STUDENT" &&  <Button variant="success"> Start </Button>
-    }
 
 
-   
-   
+    </div>
 
-  </div>
-
-)}
+  )
+}
