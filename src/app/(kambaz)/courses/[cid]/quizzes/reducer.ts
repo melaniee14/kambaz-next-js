@@ -23,7 +23,20 @@ const quizzesSlice = createSlice({
           desc: quiz.desc ?? "New Quiz Description",
           published: quiz.published ?? false,
           score: quiz.score ?? 0,
-          newQuiz: true
+          newQuiz: true,
+          quizType: quiz.quizType ?? "Graded Quiz",
+          assignmentGroup: quiz.assignmentGroup ?? "Quizzes",
+          shuffleAnswers: quiz.shuffleAnswers ?? true,
+          timeLimit: quiz.timeLimit ?? 20,
+          multipleAttempts: quiz.multipleAttempts ?? false,
+          numberOfAttempts: quiz.numberOfAttempts ?? 1,
+          showCorrectAnswers: quiz.showCorrectAnswers ?? "Immediately",
+          accessCode: quiz.accessCode ?? "",
+          oneQuestionAtATime: quiz.oneQuestionAtATime ?? true,
+          webcamRequired: quiz.webcamRequired ?? false,
+          lockQuestionsAfter: quiz.lockQuestionsAfter ?? false
+
+         
         };
         state.quizzes = [...state.quizzes, newQuiz] as any;
 
