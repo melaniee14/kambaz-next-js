@@ -19,10 +19,11 @@ const quizzesSlice = createSlice({
           available: quiz.available ?? "",
           due: quiz.due ?? "",
           points: quiz.points ?? 100,
-          numberOfQuestions: quiz.numberOfQuestions ?? 0,
+          questions: quiz.questions ?? 0,
           desc: quiz.desc ?? "New Quiz Description",
           published: quiz.published ?? false,
           score: quiz.score ?? 0,
+          newQuiz: true
         };
         state.quizzes = [...state.quizzes, newQuiz] as any;
 

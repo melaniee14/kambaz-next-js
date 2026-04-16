@@ -1,0 +1,31 @@
+[
+    {   "_id": "Q101", 
+        "title": "React Introduction Quiz", 
+        "course": "RS101",
+        "available": "2026-04-16",
+        "due": "May 13 at 11:59 pm",
+        "until": "May 13 at 11:59 pm",
+        "points": 40,
+        "questions": 5
+    },
+
+    {   "_id": "Q102", 
+        "title": "React Detailed Quiz", 
+        "course": "RS101",
+        "available": "2026-04-13 ",
+        "due": "2026-04-14",
+        "until": "May 13 at 11:59 pm",
+        "points": 60,
+        "questions": 9
+    },
+
+    {   "_id": "Q101", 
+    "title": "History of Matcha Quiz", 
+    "course": "MM101",
+    "available": "2026-04-15",
+    "due": "2026-04-18",
+    "points": 60,
+    "questions": 9,
+    "published": true
+}
+]

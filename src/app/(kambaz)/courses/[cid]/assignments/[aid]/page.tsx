@@ -48,7 +48,7 @@ export default function AssignmentEditor() {
 
   const deleteOrNot = async () => {
     if ((currentAssignment as any)?.newAssign) {
-      await client.deleteAssignment(editedAssignment._id);
+    
       dispatch(setAssignments(assignments.filter((a: any) => a._id !== editedAssignment._id)));
       
     }

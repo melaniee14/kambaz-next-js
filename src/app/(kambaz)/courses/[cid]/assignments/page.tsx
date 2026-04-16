@@ -47,10 +47,9 @@ export default function Assignments() {
         points: 100,
         newAssign: true,
       };
-      const assignment = await client.createAssignmentForCourse(cid, newAssignment);
-  
-      dispatch(setAssignments([...assignments, assignment]));
-      router.push(`/courses/${cid}/assignments/${assignment._id}`);
+      
+      dispatch(setAssignments([...assignments, newAssignment]));
+      router.push(`/courses/${cid}/assignments/${aid}`);
     }
     
   }
