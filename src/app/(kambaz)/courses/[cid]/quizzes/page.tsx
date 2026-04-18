@@ -6,8 +6,7 @@ import { FaCaretDown } from "react-icons/fa";
 import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "../modules/GreenCheckmark";
 import { useParams } from "next/navigation";
-import { setQuizzes }
-  from "./reducer";
+import { setQuizzes }  from "./reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../store";
 import "../../../../(kambaz)/styles.css"
@@ -128,7 +127,7 @@ export default function Quizzes() {
 
                         {currentDate > new Date(quiz.due) ? <b>Closed</b> :
                           currentDate > new Date(quiz.available) ? (<a><b>Available</b> <a className="text-danger">Multiple Dates </a></a>) : (<a><b>Not available until</b> {quiz.available}</a>)}
-                        <b>Due</b> {quiz.due} | {quiz.points} pts | {quiz.questions} questions {currentUser?.role == "STUDENT" && <div> | {quiz.score}/100 </div>}
+                        <b>Due</b> {quiz.due} | {quiz.points} pts | {quiz.questions?.length ?? 0} questions {currentUser?.role == "STUDENT" && <div> | {quiz.score}/100 </div>}
                       </div>
                     </div>
                   </div>
@@ -145,13 +144,13 @@ export default function Quizzes() {
                             if (quiz.published) {
                               const updatedQuiz = { ...quiz, published: false }
                               await client.updateQuiz(updatedQuiz);
-                              dispatch(setQuizzes({ ...quizzes, updatedQuiz }));
+                              dispatch(setQuizzes(quizzes.map((q: any) => q._id === updatedQuiz._id ? updatedQuiz : q)));
                             }
 
                             else {
                               const updatedQuiz = { ...quiz, published: true }
                               await client.updateQuiz(updatedQuiz);
-                              dispatch(setQuizzes({ ...quizzes, updatedQuiz }));
+                              dispatch(setQuizzes(quizzes.map((q: any) => q._id === updatedQuiz._id ? updatedQuiz : q)));
                             }
                           }
                           }>

@@ -9,258 +9,7 @@ import { RootState } from "../../../../store";
 import { setQuizzes } from "../reducer";
 import { useEffect, useState } from "react";
 import * as client from "../client";
-import { FaTrash } from "react-icons/fa";
-import { FaPencil } from "react-icons/fa6";
-import { v4 as uuidv4 } from "uuid";
-
-type QuestionType = "multiple_choice" | "true_false" | "fill_in_blank";
-
-interface Choice {
-  id: string;
-  text: string;
-  correct: boolean;
-}
-
-interface Question {
-  id: string;
-  type: QuestionType;
-  title: string;
-  points: number;
-  question: string;
-  choices: Choice[];
-  correctAnswer?: string;
-  blanks?: string[];
-  editing: boolean;
-}
-
-function newQuestion(): Question {
-  return {
-    id: uuidv4(),
-    type: "multiple_choice",
-    title: "New Question",
-    points: 1,
-    question: "",
-    choices: [
-      { id: uuidv4(), text: "", correct: true },
-      { id: uuidv4(), text: "", correct: false },
-      { id: uuidv4(), text: "", correct: false },
-      { id: uuidv4(), text: "", correct: false },
-    ],
-    correctAnswer: "true",
-    blanks: [""],
-    editing: true,
-  };
-}
-
-function QuestionEditor({
-  question, onChange, onSave, onCancel, onDelete, onToggleEdit,
-}: {
-  question: Question;
-  onChange: (q: Question) => void;
-  onSave: () => void;
-  onCancel: () => void;
-  onDelete: () => void;
-  onToggleEdit: () => void;
-}) {
-  const setCorrectChoice = (id: string) => {
-    onChange({
-      ...question,
-      choices: question.choices.map((c) => ({ ...c, correct: c.id === id })),
-    });
-  };
-
-  const updateChoiceText = (id: string, text: string) => {
-    onChange({
-      ...question,
-      choices: question.choices.map((c) => c.id === id ? { ...c, text } : c),
-    });
-  };
-
-  const addChoice = () => {
-    onChange({
-      ...question,
-      choices: [...question.choices, { id: uuidv4(), text: "", correct: false }],
-    });
-  };
-
-  const removeChoice = (id: string) => {
-    onChange({
-      ...question,
-      choices: question.choices.filter((c) => c.id !== id),
-    });
-  };
-
-  if (!question.editing) {
-    return (
-      <Card className="mb-3 border">
-        <CardBody>
-          <div className="d-flex justify-content-between align-items-start">
-            <div>
-              <div className="d-flex align-items-center gap-2 mb-1">
-                <strong>{question.title}</strong>
-                <Badge bg="secondary" className="text-capitalize">
-                  {question.type.replace(/_/g, " ")}
-                </Badge>
-                <Badge bg="primary">{question.points} pt{question.points !== 1 ? "s" : ""}</Badge>
-              </div>
-              <div className="text-muted small">
-                {question.question || <em>No question text</em>}
-              </div>
-            </div>
-            <div className="d-flex gap-2">
-              <Button size="sm" variant="outline-secondary" onClick={onToggleEdit}>
-                <FaPencil />
-              </Button>
-              <Button size="sm" variant="outline-danger" onClick={onDelete}>
-                <FaTrash />
-              </Button>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-    );
-  }
-
-  return (
-    <Card className="mb-3 border border-primary">
-      <CardBody>
-        <Row className="mb-3 align-items-center">
-          <Col sm={5}>
-            <FormControl
-              type="text"
-              placeholder="Question Title"
-              value={question.title}
-              onChange={(e) => onChange({ ...question, title: e.target.value })}
-            />
-          </Col>
-          <Col sm={4}>
-            <FormSelect
-              value={question.type}
-              onChange={(e) => onChange({ ...question, type: e.target.value as QuestionType })}
-            >
-              <option value="multiple_choice">Multiple Choice</option>
-              <option value="true_false">True / False</option>
-              <option value="fill_in_blank">Fill in the Blank</option>
-            </FormSelect>
-          </Col>
-          <Col sm={3}>
-            <div className="d-flex align-items-center gap-2">
-              <FormLabel className="mb-0 text-nowrap">pts:</FormLabel>
-              <FormControl
-                type="number"
-                min={0}
-                value={question.points}
-                onChange={(e) => onChange({ ...question, points: Number(e.target.value) })}
-              />
-            </div>
-          </Col>
-        </Row>
-
-        <div className="mb-3">
-          <FormLabel>Question</FormLabel>
-          <FormControl
-            as="textarea"
-            rows={3}
-            placeholder="Enter question text..."
-            value={question.question}
-            onChange={(e) => onChange({ ...question, question: e.target.value })}
-          />
-        </div>
-
-        {question.type === "multiple_choice" && (
-          <div className="mb-3">
-            <FormLabel>Answers <span className="text-muted fs-6">(select the correct answer)</span></FormLabel>
-            {question.choices.map((choice) => (
-              <div key={choice.id} className="d-flex align-items-center gap-2 mb-2">
-                <input
-                  type="radio"
-                  name={`correct-${question.id}`}
-                  checked={choice.correct}
-                  onChange={() => setCorrectChoice(choice.id)}
-                />
-                <FormControl
-                  type="text"
-                  placeholder="Answer choice..."
-                  value={choice.text}
-                  onChange={(e) => updateChoiceText(choice.id, e.target.value)}
-                />
-                <Button
-                  size="sm"
-                  variant="outline-danger"
-                  onClick={() => removeChoice(choice.id)}
-                  disabled={question.choices.length <= 2}
-                >
-                  <FaTrash />
-                </Button>
-              </div>
-            ))}
-            <Button size="sm" variant="outline-secondary" onClick={addChoice}>
-              + Add Choice
-            </Button>
-          </div>
-        )}
-
-        {question.type === "true_false" && (
-          <div className="mb-3">
-            <FormLabel>Correct Answer</FormLabel>
-            <FormSelect
-              value={question.correctAnswer}
-              onChange={(e) => onChange({ ...question, correctAnswer: e.target.value })}
-            >
-              <option value="true">True</option>
-              <option value="false">False</option>
-            </FormSelect>
-          </div>
-        )}
-
-        {question.type === "fill_in_blank" && (
-          <div className="mb-3">
-            <FormLabel>
-              Accepted Answers <span className="text-muted fs-6">(any of these will be marked correct)</span>
-            </FormLabel>
-            {(question.blanks ?? [""]).map((blank, i) => (
-              <div key={i} className="d-flex gap-2 mb-2">
-                <FormControl
-                  type="text"
-                  placeholder={`Accepted answer ${i + 1}...`}
-                  value={blank}
-                  onChange={(e) => {
-                    const updated = [...(question.blanks ?? [""])];
-                    updated[i] = e.target.value;
-                    onChange({ ...question, blanks: updated });
-                  }}
-                />
-                <Button
-                  size="sm"
-                  variant="outline-danger"
-                  disabled={(question.blanks ?? [""]).length <= 1}
-                  onClick={() => {
-                    const updated = (question.blanks ?? [""]).filter((_, idx) => idx !== i);
-                    onChange({ ...question, blanks: updated.length ? updated : [""] });
-                  }}
-                >
-                  <FaTrash />
-                </Button>
-              </div>
-            ))}
-            <Button
-              size="sm"
-              variant="outline-secondary"
-              onClick={() => onChange({ ...question, blanks: [...(question.blanks ?? [""]), ""] })}
-            >
-              + Add Answer
-            </Button>
-          </div>
-        )}
-
-        <div className="d-flex gap-2 justify-content-end mt-3">
-          <Button size="sm" variant="secondary" onClick={onCancel}>Cancel</Button>
-          <Button size="sm" variant="danger" onClick={onSave}>Save Question</Button>
-        </div>
-      </CardBody>
-    </Card>
-  );
-}
+import QuestionEditor, { Question, newQuestion } from "./QuestionEditior";
 
 export default function QuizEditor() {
   const { qid, cid } = useParams();
@@ -274,17 +23,20 @@ export default function QuizEditor() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [savedQuestions, setSavedQuestions] = useState<Question[]>([]);
 
-  // Fetch quizzes from DB into Redux when editor loads
   useEffect(() => {
     client.findQuizzesForCourse(cid as string).then((data) => {
       dispatch(setQuizzes(data));
     });
   }, [cid]);
 
-  // Set editedQuiz once quizzes are loaded into Redux
   useEffect(() => {
     if (currentQuiz) {
       setEditedQuiz(currentQuiz);
+      if (currentQuiz.questions?.length > 0) {
+        const loaded = currentQuiz.questions.map((q: any) => ({ ...q, editing: false }));
+        setQuestions(loaded);
+        setSavedQuestions(loaded);
+      }
     }
   }, [qid, quizzes]);
 
@@ -296,14 +48,16 @@ export default function QuizEditor() {
 
   const saveQuiz = async (publish = false) => {
     if (!editedQuiz) return;
+    const cleanedQuestions = questions.map(({ editing, ...q }) => q);
+    const quizWithQuestions = { ...editedQuiz, questions: cleanedQuestions };
     const exists = quizzes.find((q: any) => q._id === editedQuiz._id && !q.newQuiz);
     if (exists) {
-      const { newQuiz, ...quizToSave } = editedQuiz;
+      const { newQuiz, ...quizToSave } = quizWithQuestions;
       const finalQuiz = publish ? { ...quizToSave, published: true } : quizToSave;
       await client.updateQuiz(finalQuiz);
       dispatch(setQuizzes(quizzes.map((q: any) => q._id === finalQuiz._id ? finalQuiz : q)));
     } else {
-      const { newQuiz, ...quizToSave } = editedQuiz;
+      const { newQuiz, ...quizToSave } = quizWithQuestions;
       const finalQuiz = publish ? { ...quizToSave, published: true } : quizToSave;
       const created = await client.createQuizForCourse(cid, finalQuiz);
       dispatch(setQuizzes([...quizzes.filter((q: any) => q._id !== editedQuiz._id), created]));
@@ -318,12 +72,10 @@ export default function QuizEditor() {
     router.push(`/courses/${cid}/quizzes`);
   };
 
-  const addQuestion = () => {
-    setQuestions([...questions, newQuestion()]);
-  };
+  const addQuestion = () => setQuestions([...questions, newQuestion()]);
 
   const updateQuestion = (id: string, updated: Question) => {
-    setQuestions(questions.map((q) => (q.id === id ? updated : q)));
+    setQuestions(questions.map((q) => q.id === id ? updated : q));
   };
 
   const saveQuestion = (id: string) => {
@@ -354,9 +106,7 @@ export default function QuizEditor() {
     <div>
       <Nav variant="tabs" className="mb-4">
         <Nav.Item>
-          <Nav.Link active={activeTab === "details"} onClick={() => setActiveTab("details")}>
-            Details
-          </Nav.Link>
+          <Nav.Link active={activeTab === "details"} onClick={() => setActiveTab("details")}>Details</Nav.Link>
         </Nav.Item>
         <Nav.Item>
           <Nav.Link active={activeTab === "questions"} onClick={() => setActiveTab("questions")}>
@@ -372,13 +122,11 @@ export default function QuizEditor() {
             <FormControl type="text" placeholder={editedQuiz?.title}
               onChange={(e) => setEditedQuiz({ ...editedQuiz, title: e.target.value })} />
           </div>
-
           <div className="mb-4">
             <FormLabel>Description</FormLabel>
             <FormControl as="textarea" rows={6} placeholder={editedQuiz?.desc}
               onChange={(e) => setEditedQuiz({ ...editedQuiz, desc: e.target.value })} />
           </div>
-
           <Row className="mb-3 offset-sm-1">
             <FormLabel column sm={3}>Quiz Type</FormLabel>
             <Col sm={9}>
@@ -391,7 +139,6 @@ export default function QuizEditor() {
               </FormSelect>
             </Col>
           </Row>
-
           <Row className="mb-3 offset-sm-1">
             <FormLabel column sm={3}>Points</FormLabel>
             <Col sm={9}>
@@ -399,7 +146,6 @@ export default function QuizEditor() {
                 onChange={(e) => setEditedQuiz({ ...editedQuiz, points: Number(e.target.value) })} />
             </Col>
           </Row>
-
           <Row className="mb-3 offset-sm-1">
             <FormLabel column sm={3}>Assignment Group</FormLabel>
             <Col sm={9}>
@@ -412,7 +158,6 @@ export default function QuizEditor() {
               </FormSelect>
             </Col>
           </Row>
-
           <Row className="mb-3 offset-sm-1">
             <FormLabel column sm={3}>Options</FormLabel>
             <Col sm={9}>
@@ -505,7 +250,6 @@ export default function QuizEditor() {
               </CardBody></Card>
             </Col>
           </Row>
-
           <Row className="mb-3 offset-sm-1">
             <FormLabel column sm={3}>Assign</FormLabel>
             <Col sm={9}>
@@ -528,7 +272,6 @@ export default function QuizEditor() {
               </CardBody></Card>
             </Col>
           </Row>
-
           <hr />
           <Row className="mb-3">
             <Col className="d-flex gap-2 justify-content-end">
@@ -544,22 +287,13 @@ export default function QuizEditor() {
         <div>
           <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <span className="fw-bold fs-5">
-                {questions.length} Question{questions.length !== 1 ? "s" : ""}
-              </span>
-              <span className="text-muted ms-3">
-                Total: {totalPoints} pt{totalPoints !== 1 ? "s" : ""}
-              </span>
+              <span className="text-muted ms-3">Total: {totalPoints} pt{totalPoints !== 1 ? "s" : ""}</span>
             </div>
-            <Button variant="danger" onClick={addQuestion}>+ New Question</Button>
           </div>
-
-          {questions.length === 0 && (
             <div className="text-center text-muted py-5 border rounded">
-              <p className="mb-2">No questions yet.</p>
-              <Button variant="outline-danger" onClick={addQuestion}>Add your first question</Button>
+              <Button variant="secondary" onClick={addQuestion}>+ New Question</Button>
             </div>
-          )}
+          
 
           {questions.map((question) => (
             <QuestionEditor
@@ -578,7 +312,6 @@ export default function QuizEditor() {
             <Col className="d-flex gap-2 justify-content-end">
               <Button variant="secondary" onClick={cancel}>Cancel</Button>
               <Button variant="danger" onClick={() => saveQuiz(false)}>Save</Button>
-              <Button variant="success" onClick={() => saveQuiz(true)}>Save & Publish</Button>
             </Col>
           </Row>
         </div>
