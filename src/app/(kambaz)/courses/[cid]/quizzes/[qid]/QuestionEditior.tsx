@@ -77,8 +77,6 @@ export default function QuestionEditor({
             <div>
               <div className="d-flex align-items-center gap-2 mb-1">
                 <strong>{question.title}</strong>
-                <Badge bg="secondary" className="text-capitalize">{question.type.replace(/_/g, " ")}</Badge>
-                <Badge bg="primary">{question.points} pt{question.points !== 1 ? "s" : ""}</Badge>
               </div>
               <div className="text-muted small">{question.question || <em>No question text</em>}</div>
             </div>
@@ -178,7 +176,7 @@ export default function QuestionEditor({
 
         <div className="d-flex gap-2 justify-content-end mt-3">
           <Button size="sm" variant="secondary" onClick={onCancel}>Cancel</Button>
-          <Button size="sm" variant="danger" onClick={onSave}>Save Question</Button>
+          <Button size="sm" variant="danger" onClick={onSave}>Update Question</Button>
         </div>
       </CardBody>
     </Card>

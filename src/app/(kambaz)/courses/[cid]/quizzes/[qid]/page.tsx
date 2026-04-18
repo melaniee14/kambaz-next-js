@@ -104,17 +104,26 @@ export default function QuizEditor() {
 
   return (
     <div>
-      <Nav variant="tabs" className="mb-4">
-        <Nav.Item>
-          <Nav.Link active={activeTab === "details"} onClick={() => setActiveTab("details")}>Details</Nav.Link>
-        </Nav.Item>
-        <Nav.Item>
-          <Nav.Link active={activeTab === "questions"} onClick={() => setActiveTab("questions")}>
-            Questions {questions.length > 0 && <Badge bg="secondary">{questions.length}</Badge>}
-          </Nav.Link>
-        </Nav.Item>
-      </Nav>
-
+     <Nav variant="tabs" className="mb-4">
+  <Nav.Item>
+    <Nav.Link
+      active={activeTab === "details"}
+      onClick={() => setActiveTab("details")}
+      className={activeTab === "details" ? "text-black" : "text-danger"}
+    >
+      Details
+    </Nav.Link>
+  </Nav.Item>
+  <Nav.Item>
+    <Nav.Link
+      active={activeTab === "questions"}
+      onClick={() => setActiveTab("questions")}
+      className={activeTab === "questions" ? "text-black" : "text-danger"}
+    >
+      Questions
+    </Nav.Link>
+  </Nav.Item>
+</Nav>
       {activeTab === "details" && (
         <div>
           <div className="mb-3">
