@@ -74,6 +74,9 @@ export default function Quizzes() {
     fetchQuizzes();
   }, [cid]);
 
+  const visibleQuizzes = currentUser?.role === "STUDENT"
+  ? quizzes.filter((q: any) => q.published)
+  : quizzes;
 
   return (
     <div id="wd-quizzes">
@@ -110,7 +113,7 @@ export default function Quizzes() {
             </div>
           </div>
 
-          {quizzes.map((quiz: any) => (
+          {visibleQuizzes.map((quiz: any) => (
             <ListGroup className="wd-lessons rounded-0">
               <ListGroupItem className="wd-lesson p-3 ps-1">
                 <div className="d-flex align-items-center justify-content-between">
