@@ -31,7 +31,7 @@ export default function QuizDetails() {
       {currentUser?.role != "STUDENT" &&
         <div>
           <div className="fs-6 d-flex align-items-center gap-2 offset-sm-4">
-            <Button variant="secondary"> Preview </Button>
+            <Button variant="secondary" onClick={() => router.push(`/courses/${cid}/quizzes/${quiz._id}/preview`)}> Preview</Button>
             <Button variant="secondary" onClick={() => router.push(`/courses/${cid}/quizzes/${quiz._id}`)}> <FaPencil /> Edit</Button>
           </div>
           <br />

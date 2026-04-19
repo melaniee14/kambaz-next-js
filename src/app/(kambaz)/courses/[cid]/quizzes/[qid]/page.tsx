@@ -285,7 +285,7 @@ export default function QuizEditor() {
           <Row className="mb-3">
             <Col className="d-flex gap-2 justify-content-end">
               <Button variant="secondary" onClick={cancel}>Cancel</Button>
-              <Button variant="danger" onClick={() => saveQuiz(false)}>Save</Button>
+              <Button variant="danger" onClick={async () => { await saveQuiz(false); router.push(`/courses/${cid}/quizzes/${qid}/preview`); }}>Save</Button>
               <Button variant="success" onClick={() => saveQuiz(true)}>Save & Publish</Button>
             </Col>
           </Row>
@@ -320,7 +320,7 @@ export default function QuizEditor() {
           <Row className="mb-3">
             <Col className="d-flex gap-2 justify-content-end">
               <Button variant="secondary" onClick={cancel}>Cancel</Button>
-              <Button variant="danger" onClick={() => saveQuiz(false)}>Save</Button>
+              <Button variant="danger" onClick={async () => { await saveQuiz(false); router.push(`/courses/${cid}/quizzes/${qid}/preview`); }}>Save</Button>
             </Col>
           </Row>
         </div>
