@@ -31,7 +31,8 @@ export default function Quizzes() {
 
 
 
-  const currentDate = new Date();
+
+  const currentDate = new Date().toISOString().split('T')[0];
 
   const onRemoveQuiz = async (quizId: string) => {
     await client.deleteQuiz(quizId);
@@ -50,11 +51,12 @@ export default function Quizzes() {
         points: 100,
         newQuiz: true,
         score: 0,
-        questions: 1,
+        questions: [],
         published: false,
         desc: "New Quiz Description",
         available: currentDate,
-        due: currentDate
+        due: currentDate,
+        until: currentDate
       };
       const quiz = await client.createQuizForCourse(cid, newQuiz);
 
@@ -69,7 +71,7 @@ export default function Quizzes() {
     dispatch(setQuizzes(quizzes));
   }
 
-
+ 
   useEffect(() => {
     fetchQuizzes();
   }, [cid]);
@@ -121,23 +123,23 @@ export default function Quizzes() {
                        <RxRocket className="fs-5 text-success ms-3" />
                     <div>
                       <h5 className="mb-1">
-                        <a href={`/courses/${quiz.course}/quizzes/${quiz._id}`}
+                        <a href={currentUser?.role === "STUDENT" ? `/courses/${quiz.course}/quizzes/${quiz._id}/details` 
+                        : `/courses/${quiz.course}/quizzes/${quiz._id}`}
                           className="wd-quiz-link" >
                           <b> {quiz.title} </b>
 
                         </a> </h5>
                       <div className="fs-6">
 
-                        {currentDate > new Date(quiz.due) ? <b>Closed</b> :
-                          currentDate > new Date(quiz.available) ? (<a><b>Available</b> <a className="text-danger">Multiple Dates </a></a>) : (<a><b>Not available until</b> {quiz.available}</a>)}
-                        <b>Due</b> {quiz.due} | {quiz.points} pts | {quiz.questions?.length ?? 0} questions {currentUser?.role == "STUDENT" && <div> | {quiz.score}/100 </div>}
+                        {currentDate > (quiz.due) ? <b>Closed</b> :
+                          currentDate > (quiz.available) ? (<a> <b>Available</b> <a className="text-danger">Multiple Dates </a></a>) : (<a><b>Not available until</b> {quiz.available}</a>)}
+                        <b>Due</b> {quiz.due} | {quiz.questions?.reduce((sum: number, q: any) => sum + q.points, 0)} pts | {quiz.questions.length ?? 0} questions {currentUser?.role == "STUDENT" &&  ` | ${quiz.score} / ${quiz.questions?.reduce((sum: number, q: any) => sum + q.points, 0)}` }
                       </div>
                     </div>
                   </div>
 
                  
                   <div className="float-end d-flex align-items-center gap-2 ">
-
                   {currentUser?.role != "STUDENT" && show &&
                       <div className="fs-6 d-flex align-items-center gap-2">
                         <FaTrash onClick={() => onRemoveQuiz(quiz._id)} className="text-danger" />

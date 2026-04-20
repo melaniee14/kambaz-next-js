@@ -21,6 +21,13 @@ export const updateQuiz = async (quiz: any) => {
     const { data } = await axiosWithCredentials.put(`${QUIZZES_API}/${quiz._id}`, quiz);
     return data;
 };
+
+export const updateScore = async(quiz: any, score: number, attempts: number, previous: boolean, answers: any) => {
+  const response = await axiosWithCredentials.post(`${QUIZZES_API}/${quiz._id}/score`, {score, attempts, previous, answers});
+  return response.data;
+}
+
+
   
   
 export const findQuizzesForCourse = async (courseId: any) => {

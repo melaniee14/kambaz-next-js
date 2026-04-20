@@ -26,6 +26,21 @@ export default function QuizDetails() {
 
   if (!quiz) return <div>Loading...</div>;
 
+
+  const seePrevQuiz = async () => {
+    await client.updateScore(quiz, quiz.score, quiz.attempts, true, quiz.prevAnswers);
+    const newQuizzes = quizzes.map((q: any) => q._id === quiz._id ? {...quiz, score: quiz.score, attempts: quiz.attempts, previous: true, prevAnswers: quiz.prevAnswers} : q);
+    dispatch(setQuizzes(newQuizzes));
+
+    router.push(`/courses/${cid}/quizzes/${quiz._id}/preview`);
+   
+  }
+
+  const startQuiz = async () => {
+    await client.updateScore(quiz, quiz.score, quiz.attempts, false, quiz.prevAnswers);
+    router.push(`/courses/${cid}/quizzes/${quiz._id}/preview`);
+  }
+
   return (
     <div>
       {currentUser?.role != "STUDENT" &&
@@ -95,7 +110,22 @@ export default function QuizDetails() {
           </Row>
         </div>
       }
-      {currentUser?.role == "STUDENT" && <Button variant="success">Start</Button>}
+
+      {currentUser?.role == "STUDENT" && (quiz.attempts < quiz.numberOfAttempts ? 
+      quiz.attempts >= 1 ? 
+      <div className="d-flex justify-content-center gap-2">  
+        <Button size="lg" onClick={startQuiz} variant="success">Start </Button> 
+        
+        <Button size="lg" onClick={seePrevQuiz} variant="secondary"> See Previous Quiz </Button>
+        </div> 
+        : 
+
+      <div className="d-flex justify-content-center"> 
+      <Button size="lg" onClick={startQuiz} variant="success">Start </Button> 
+      
+      </div> : 
+      <div className="d-flex justify-content-center"> 
+      <Button onClick={seePrevQuiz} size="lg" variant="secondary"> See Previous Quiz </Button> </div> )}
     </div>
   );
 }

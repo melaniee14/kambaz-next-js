@@ -17,7 +17,7 @@ const quizzesSlice = createSlice({
         available: quiz.available ?? "",
         due: quiz.due ?? "",
         points: quiz.points ?? 100,
-        questions: quiz.questions ?? 0,
+        questions: quiz.questions ?? [],
         desc: quiz.desc ?? "New Quiz Description",
         published: quiz.published ?? false,
         score: quiz.score ?? 0,
