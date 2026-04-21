@@ -173,14 +173,10 @@ export default function QuizEditor() {
               <Card><CardBody>
                 <Row className="mb-3 align-items-center">
                   <FormLabel column sm={5}>Shuffle Answers</FormLabel>
-                  <Col sm={7}>
-                    <FormSelect value={editedQuiz?.shuffleAnswers ? "true" : "false"}
-                      onChange={(e) => setEditedQuiz({ ...editedQuiz, shuffleAnswers: e.target.value === "true" })}>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </FormSelect>
+                  <Col sm={7} className="d-flex align-items-center">
+                  <input type="checkbox" checked={!!editedQuiz?.shuffleAnswers}onChange={(e) => setEditedQuiz({ ...editedQuiz, shuffleAnswers: e.target.checked })} />
                   </Col>
-                </Row>
+                  </Row>
                 <Row className="mb-3 align-items-center">
                   <FormLabel column sm={5}>Time Limit (minutes)</FormLabel>
                   <Col sm={7}>
@@ -285,7 +281,7 @@ export default function QuizEditor() {
           <Row className="mb-3">
             <Col className="d-flex gap-2 justify-content-end">
               <Button variant="secondary" onClick={cancel}>Cancel</Button>
-              <Button variant="danger" onClick={async () => { await saveQuiz(false); router.push(`/courses/${cid}/quizzes/${qid}/preview`); }}>Save</Button>
+              <Button variant="danger" onClick={async () => { await saveQuiz(false); router.push(`/courses/${cid}/quizzes/${qid}/details`); }}>Save</Button>
               <Button variant="success" onClick={() => saveQuiz(true)}>Save & Publish</Button>
             </Col>
           </Row>
@@ -320,7 +316,7 @@ export default function QuizEditor() {
           <Row className="mb-3">
             <Col className="d-flex gap-2 justify-content-end">
               <Button variant="secondary" onClick={cancel}>Cancel</Button>
-              <Button variant="danger" onClick={async () => { await saveQuiz(false); router.push(`/courses/${cid}/quizzes/${qid}/preview`); }}>Save</Button>
+              <Button variant="danger" onClick={async () => { await saveQuiz(false); router.push(`/courses/${cid}/quizzes/${qid}/details`); }}>Save</Button>
             </Col>
           </Row>
         </div>
