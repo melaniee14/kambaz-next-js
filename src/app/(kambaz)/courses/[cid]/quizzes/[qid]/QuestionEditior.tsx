@@ -54,7 +54,8 @@ export default function QuestionEditor({
   onToggleEdit: () => void;
 }) {
   const setCorrectChoice = (id: string) => {
-    onChange({ ...question, choices: question.choices.map((c) => ({ ...c, correct: c.id === id })) });
+    onChange({ ...question, choices: question.choices.map((c) => 
+      c.id === id ? { ...c, correct: !c.correct } : c) });
   };
 
   const updateChoiceText = (id: string, text: string) => {
@@ -123,10 +124,10 @@ export default function QuestionEditor({
 
         {question.type === "multiple_choice" && (
           <div className="mb-3">
-            <FormLabel>Answers <span className="text-muted fs-6">(select the correct answer)</span></FormLabel>
+            <FormLabel>Answers <span className="text-muted fs-6">(select the correct answers)</span></FormLabel>
             {question.choices.map((choice) => (
               <div key={choice.id} className="d-flex align-items-center gap-2 mb-2">
-                <input type="radio" name={`correct-${question.id}`} checked={choice.correct}
+                <input type="checkbox" name={`correct-${question.id}`} checked={choice.correct}
                   onChange={() => setCorrectChoice(choice.id)} />
                 <FormControl type="text" placeholder="Answer choice..." value={choice.text}
                   onChange={(e) => updateChoiceText(choice.id, e.target.value)} />
@@ -140,12 +141,12 @@ export default function QuestionEditor({
 
         {question.type === "true_false" && (
           <div className="mb-3">
+            {/* onChange={(e) => onChange({ ...question, correctAnswer: e.target.value })}> */}
             <FormLabel>Correct Answer</FormLabel>
-            <FormSelect value={question.correctAnswer}
-              onChange={(e) => onChange({ ...question, correctAnswer: e.target.value })}>
-              <option value="true">True</option>
-              <option value="false">False</option>
-            </FormSelect>
+            <br/>
+
+            <input name={`tf-${question.id}`}  value="true" onChange={(e) => onChange({ ...question, correctAnswer: e.target.value })} type="radio" /> True <br/>
+            <input  name={`-${question.id}`} value="false" onChange={(e) => onChange({ ...question, correctAnswer: e.target.value })} type="radio" /> False 
           </div>
         )}
 
