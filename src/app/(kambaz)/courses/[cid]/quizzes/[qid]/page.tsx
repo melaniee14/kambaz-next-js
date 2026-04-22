@@ -104,26 +104,26 @@ export default function QuizEditor() {
 
   return (
     <div>
-     <Nav variant="tabs" className="mb-4">
-  <Nav.Item>
-    <Nav.Link
-      active={activeTab === "details"}
-      onClick={() => setActiveTab("details")}
-      className={activeTab === "details" ? "text-black" : "text-danger"}
-    >
-      Details
-    </Nav.Link>
-  </Nav.Item>
-  <Nav.Item>
-    <Nav.Link
-      active={activeTab === "questions"}
-      onClick={() => setActiveTab("questions")}
-      className={activeTab === "questions" ? "text-black" : "text-danger"}
-    >
-      Questions
-    </Nav.Link>
-  </Nav.Item>
-</Nav>
+      <Nav variant="tabs" className="mb-4">
+        <Nav.Item>
+          <Nav.Link
+            active={activeTab === "details"}
+            onClick={() => setActiveTab("details")}
+            className={activeTab === "details" ? "text-black" : "text-danger"}
+          >
+            Details
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            active={activeTab === "questions"}
+            onClick={() => setActiveTab("questions")}
+            className={activeTab === "questions" ? "text-black" : "text-danger"}
+          >
+            Questions
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
       {activeTab === "details" && (
         <div>
           <div className="mb-3">
@@ -174,16 +174,28 @@ export default function QuizEditor() {
                 <Row className="mb-3 align-items-center">
                   <FormLabel column sm={5}>Shuffle Answers</FormLabel>
                   <Col sm={7} className="d-flex align-items-center">
-                  <input type="checkbox" checked={!!editedQuiz?.shuffleAnswers}onChange={(e) => setEditedQuiz({ ...editedQuiz, shuffleAnswers: e.target.checked })} />
-                  </Col>
-                  </Row>
-                <Row className="mb-3 align-items-center">
-                  <FormLabel column sm={5}>Time Limit (minutes)</FormLabel>
-                  <Col sm={7}>
-                    <FormControl type="number" defaultValue={editedQuiz?.timeLimit}
-                      onChange={(e) => setEditedQuiz({ ...editedQuiz, timeLimit: Number(e.target.value) })} />
+                    <input type="checkbox" checked={!!editedQuiz?.shuffleAnswers} onChange={(e) => setEditedQuiz({ ...editedQuiz, shuffleAnswers: e.target.checked })} />
                   </Col>
                 </Row>
+                <Row className="mb-3 align-items-center">
+                  <FormLabel column sm={5}>Time Limit </FormLabel>
+                  <Col sm={7}>
+                    <input type="checkbox" checked={!!editedQuiz?.allowTimeLimit} onChange={(e) => setEditedQuiz({ ...editedQuiz, allowTimeLimit: e.target.checked })} />
+
+                  </Col>
+                </Row>
+                {editedQuiz?.allowTimeLimit && (
+                  <Row className="mb-3 align-items-center">
+                    <FormLabel column sm={5}>Number of Minutes </FormLabel>
+                    <Col sm={7}>
+                      <FormControl type="number" defaultValue={editedQuiz?.timeLimit}
+                        onChange={(e) => setEditedQuiz({ ...editedQuiz, timeLimit: Number(e.target.value) })} />
+                    </Col>
+                  </Row>
+
+                )
+
+                }
                 <Row className="mb-3 align-items-center">
                   <FormLabel column sm={5}>Multiple Attempts</FormLabel>
                   <Col sm={7}>
@@ -295,10 +307,10 @@ export default function QuizEditor() {
               <span className="text-muted ms-3">Total: {totalPoints} pt{totalPoints !== 1 ? "s" : ""}</span>
             </div>
           </div>
-            <div className="text-center text-muted py-5 border rounded">
-              <Button variant="secondary" onClick={addQuestion}>+ New Question</Button>
-            </div>
-          
+          <div className="text-center text-muted py-5 border rounded">
+            <Button variant="secondary" onClick={addQuestion}>+ New Question</Button>
+          </div>
+
 
           {questions.map((question) => (
             <QuestionEditor
